@@ -1,0 +1,21 @@
+stm32os/
+├── .vscode/                    # VS Code配置文件
+│   ├── extensions.json         # 推荐的VS Code扩展
+│   └── settings.json           # VS Code工作区设置
+├── general/                    # 核心功能模块
+│   ├── internal/              # 内部实现细节
+│   │   ├── address_struct.h   # 地址结构体定义
+│   │   ├── foundation_type.h  # 基础类型定义
+│   │   └── memory_distribution.h  # 内存分布定义
+│   ├── interval.h             # 数学区间模板
+│   ├── text.cpp               # 示例使用代码
+│   └── type.h                 # 类型定义集合
+├── .gitignore                 # Git忽略文件
+├── README.md                  # 项目说明文档
+├── a.txt                      # 临时文件
+├── compile_commands.json      # 编译命令配置
+├── platformio.ini             # PlatformIO项目配置
+├── temp.md                    # 临时文档
+├── update_log.txt             # 开发日志
+├── 新建 BMP 图像.bmp          # 图像资源文件
+└── 项目结构.md                # 本文件
