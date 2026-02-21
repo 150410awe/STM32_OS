@@ -1,0 +1,80 @@
+2026.2.21.11.45
+哦1145...
+
+我当然想学点嵌入式，但是at89c51 和那个2b ide还有那个无聊的课程让我一点都不想学，
+说明书我看着想死。我就想可以这样。卖个性能强点，现代的板子，为他定制做个os，我去这太好了，
+因为这样我就可以了解这个板子，学习他，还可以为他实现一些功能，那些功能什么定时器，时间，led，
+都会用到。这不都是那2b课程会有的吗，还可以是一个os实现的实战。我去，回去我就想着卖一个我喜欢的板子玩，
+只要别把我电死了
+哦，我为什么要把重构收尾？！我差点就到了我关心的地方。好吧，
+我对os的组成也有了个大概了解。尽管我已经忘了太多。但是我知道可能要有内存，
+进程，终端，文件，重定位，权限emmmm什么，我知道他们的大概构成和一些函数。。。
+emmm好吧，我都忘了。嘿嘿~
+嗯~，也可以，这个嵌入式os应该更好玩。
+-- 2026.2.19.22.19 日记
+所以我找到了更好玩的东西. 我己经写完了内存分布参数和一些基础类型.
+还有 address 类型, 我觉得他还不错
+还有你发现有一个叫internal的文件夹.
+为什么会有他???
+因为这个项目(我)的设计原则之一就是 内部复杂外部简单
+这个项目(我)的设计原则只有二个
+内部复杂外部简单, 代码即文档.
+所以我会有一个 type.h 一个类型定义集合.
+
+using namespace general::type;
+using general::memory::distribution::null_address;
+using general::memory::distribution::code_address;
+using general::memory::distribution::sram_address;
+using general::memory::distribution::peripheral_address;
+using general::memory::distribution::FSMC_address;
+using general::memory::distribution::reserved_address;
+
+还有
+general::memory::distribution{
+    using null_address = address<block::null>;    //null 地址
+    using code_address = address<block::code>;    //代码地址
+    using sram_address = address<block::sram>;    //sram 地址
+    using peripheral_address = address<block::peripheral_area>;    //外设地址
+    using FSMC_address = address<block::FSMC>;    //FSMC 地址
+    using reserved_address = address<block::reserved_area>;    //保留地址
+}
+使用时直接, 
+
+    null_address a1 { 0x08000000 };
+    code_address a2 { static_cast<code_address>(a1) };
+    a1 = 1000;
+    code_address a3 { a1 };
+    code_address a4 { a3 };
+    code_address a5 = a4;
+    a5 = a3;
+    sram_address a6 { 1545 };
+这个code_address a3 { a1 };,我不知道为什么会没问题.
+我写的是
+template<block other_block_type>
+constexpr explicit address(const address<other_block_type>& other) :
+    address_value(other.address_value) {
+}
+这应该出错, 
+- 直接初始化：允许使用 explicit 构造函数
+- 复制初始化：不允许使用 explicit 构造函数
+- 列表初始化：允许使用 explicit 构造函数（C++11+特性）
+我都无语. 都写explicit了,还可以隐式转换. 就是脑子有问题.
+要是
+// 阻止隐式转换
+constexpr address(const address&) = delete;
+
+// 允许显式转换（使用static_cast）
+template<block other_block_type>
+constexpr explicit address(const address<other_block_type>& other) :
+    address_value(other.address_value) {
+}
+这样那就太麻烦了.同类型还他妈要转换?你怎么不去死. 2b
+然后这个设计也是很符合项目(我)的设计原则.
+对了, 显式转换是为了安全性和可靠性.
+但同时不应有太多复杂性.还有冗余.
+-- 12.16
+还有,我在代码中有意思的地方.
+还有这个interval - 数学区间也是符合设计原则
+constexpr int_interval alternative_names_area { 0x00000000, 0x000FFFFF };   // 别名区
+constexpr int_interval reserved_area1 { 0x00100000, 0x07FFFFFF };   // 保留区域1
+这很简单.
