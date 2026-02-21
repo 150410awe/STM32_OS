@@ -45,5 +45,31 @@
         "concepts": "cpp",
         "stdexcept": "cpp",
         "numbers": "cpp"
-    }
+    },
+    
+    "clangd.enabled": true,
+    "clangd.path": "F:\\App\\LLVM\\bin\\clangd.exe",
+    "clangd.arguments": [
+        "--compile-commands-dir=.",
+        "--background-index=false",
+        "--clang-tidy",
+        "--completion-style=detailed",
+        "--header-insertion=never",
+        "--query-driver=F:\\App\\LLVM\\bin\\clang++.exe"
+    ],
+    
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "C_Cpp.autocomplete": "Disabled",
+    "C_Cpp.errorSquiggles": "Disabled",
+    
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": false
+    },
+    
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.acceptSuggestionOnCommitCharacter": true,
+    "editor.suggestOnTriggerCharacters": true,
+    "editor.tabCompletion": "on",
 }

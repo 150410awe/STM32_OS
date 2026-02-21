@@ -1,3 +1,31 @@
+2026.2.21.20.21
+增加了对 clangd 的支持. 
+增加了
+general::memory::distribution::address::check_address()
+检查地址.
+去除了
+update_block_type
+整合到check_address
+有地址块类型检查和该块类型的地址范围检查, 保证地址的合法性, 可以防止地址指向越界和保留区域
+--20.59
+好拉, 现在这个0.00.01也算干完了.
+下面是什么?
+好又不好的是这个项目不会有终端和硬盘. 这实现起来会更简单.
+可以写
+cctype,time,utime,Imn_enum_struct_bit_mask,variadic
+emmmmm,我就会个x64,arm汇编我是不会的.
+所以我直接封装一下吧.
+cctype,time,utime std都有
+我直接封装
+variadic lmn_enum_struct_bit_mask 我copy一下
+okk, 那这std就这样完了.
+哎呀这个, cctype,time,utime直接用std的把,我不写了.
+variadic lmn_enum_struct_bit_mask copy 过来...
+我写屁. variadic 问题太多了. 还是直接用库吧, 我是无语.
+我可不造一个va_start出来.
+引入 lmn_enum_struct_bit_mask 
+--23.22
+0.00.02 增加了 general::memory::distribution::address::check_address(), update_block_type 整合到check_address, 引入 lmn_enum_struct_bit_mask 
 2026.2.21.11.45
 哦1145...
 

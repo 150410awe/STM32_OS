@@ -8,5 +8,7 @@ void text() {
     code_address a4 { a3 };
     code_address a5 = a4;
     a5 = a3;
-    sram_address a6 { 1545 };
+    SRAM_address a6 { 1545 };
+    int32_t a7 = 100;
+    SRAM_address a8{reinterpret_cast<max_int_t*>(a7)};
 }

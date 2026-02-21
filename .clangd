@@ -1,0 +1,59 @@
+CompileFlags:
+  # 使用compile_commands.json文件
+  CompilationDatabase: .
+  
+  # 添加额外的编译标志 - 针对嵌入式环境优化
+  Add: 
+    - -xc++
+    - -std=gnu++17
+    - -D__GNUC__
+    - -D__clang__
+    - -D__ARM_ARCH_7M__
+    - -D__thumb__
+    - -D__thumb2__
+    - -mcpu=cortex-m4
+    - -mthumb
+    - -mfpu=fpv4-sp-d16
+    - -mfloat-abi=hard
+    - -nostdlib
+    - -ffunction-sections
+    - -fdata-sections
+    - -Os
+    
+    # 嵌入式环境优化 - 移除不支持的标志
+    - -Wno-c++98-compat
+    - -Wno-c++98-compat-pedantic
+    
+    # 添加嵌入式环境的标准库路径
+    - -isystem
+    - C:/.platformio/packages/toolchain-gccarmnoneeabi/arm-none-eabi/include/c++/12.3.1
+    - -isystem
+    - C:/.platformio/packages/toolchain-gccarmnoneeabi/arm-none-eabi/include/c++/12.3.1/arm-none-eabi
+    - -isystem
+    - C:/.platformio/packages/toolchain-gccarmnoneeabi/arm-none-eabi/include
+    - -isystem
+    - C:/.platformio/packages/toolchain-gccarmnoneeabi/arm-none-eabi/include/c++/12.3.1/backward
+    
+    # 添加clangd自身需要的头文件路径
+    - -isystem
+    - F:/App/LLVM/lib/clang/22/include
+
+Diagnostics:
+  # 禁用一些不适用于嵌入式开发的警告
+  Suppress:
+    - "-Wmissing-field-initializers"
+    - "-Wunused-parameter"
+    - "-Wunused-variable"
+    - "-Wunused-function"
+
+Index:
+  # 索引设置
+  Background: Skip
+  
+Hover:
+  # 悬停信息设置
+  ShowAKA: Yes
+
+Completion:
+  # 代码补全设置
+  AllScopes: Yes

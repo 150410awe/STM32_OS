@@ -1,5 +1,10 @@
 #pragma once
 
+/**
+ * foundation_type.h - 基础类型头文件
+ * @note 包含基础类型相关的定义和函数声明
+*/
+
 #include <cstdint>
 
 namespace general::type {
