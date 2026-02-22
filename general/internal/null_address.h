@@ -11,8 +11,6 @@ namespace general::memory {
     
 struct null_address : address<null_address, block::null> {
     using address<null_address, block::null>::address;
-    
-    constexpr null_address() : address<null_address, block::null>(null_address_value) { }
     // NULL 不可以修改
     constexpr null_address& operator=(max_int_t set_address) = delete;
     constexpr null_address& operator+=(const max_int_t set_address) = delete;

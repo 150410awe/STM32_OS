@@ -12,11 +12,18 @@ namespace general::memory {
     
 
 struct peripheral_address : address<peripheral_address, block::peripheral_area> {
-    using address<peripheral_address, block::peripheral_area>::address;
-    using address<peripheral_address, block::peripheral_area>::operator=;
-    using address<peripheral_address, block::peripheral_area>::operator+;
-    using address<peripheral_address, block::peripheral_area>::operator+=;
-    general::device::external_device_type external_device_type;
+    constexpr peripheral_address() = default;
+    constexpr peripheral_address(const general::device::external_device_type set_device_type) : external_device_type(set_device_type) {
+        address_value = general::device::external_device_memory[static_cast<size_t>(external_device_type)].start;
+    }
+    peripheral_address& operator=(const general::device::external_device_type set_device_type) {
+        external_device_type = set_device_type;
+        address_value = general::device::external_device_memory[static_cast<size_t>(external_device_type)].start;
+        return *this;
+    }
+    constexpr peripheral_address& operator+=(const peripheral_address set_address) = delete;
+    constexpr peripheral_address operator+(const peripheral_address set_address) = delete;
+    general::device::external_device_type external_device_type = general::device::external_device_type::null;
     
     constexpr bool check_address() const {
         if (!block_peripheral_snippet.contains(address_value))

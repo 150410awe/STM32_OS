@@ -100,16 +100,6 @@ namespace general::device {
         flash_interface,   // Flash控制寄存器;
         BKPSRAM,            // 备份SRAM;
 
-        //FSMC 区
-        FSMC_NORSRAM1,      // FSMC NOR/SRAM 区域1 NE1片选;
-        FSMC_NORSRAM2,      // FSMC NOR/SRAM 区域2 NE2片选;
-        FSMC_NORSRAM3,      // FSMC NOR/SRAM 区域3 NE3片选;
-        FSMC_NORSRAM4,      // FSMC NOR/SRAM 区域4 NE4片选 ;
-        FSMC_NAND1,         // FSMC NAND 区域1 NCE2片选 同手册;
-        FSMC_NAND2,         // FSMC NAND 区域2 NCE3片选;
-        FSMC_PCCARD,        // FSMC PC卡区域 NCE4_1/NCE4_2;
-        FSMC_register,      // FSMC 寄存器区域 FSMC控制寄存器;
-
         //内核外设
         NVIC,               // 嵌套向量中断控制器;
         SCB,                // 系统控制块;
@@ -121,8 +111,21 @@ namespace general::device {
         TPIU,               // 跟踪端口接口单元;
         PWR,                // 电源控制单元;
         SYSCFG,             // 系统配置控制器;
+        null,               // 无设备
 
         MAX_VAL,
-        null,               // 无设备
+    };
+    enum class FSMC_device_type : u8{
+        //FSMC 区
+        FSMC_NORSRAM1,      // FSMC NOR/SRAM 区域1 NE1片选;
+        FSMC_NORSRAM2,      // FSMC NOR/SRAM 区域2 NE2片选;
+        FSMC_NORSRAM3,      // FSMC NOR/SRAM 区域3 NE3片选;
+        FSMC_NORSRAM4,      // FSMC NOR/SRAM 区域4 NE4片选 ;
+        FSMC_NAND1,         // FSMC NAND 区域1 NCE2片选 同手册;
+        FSMC_NAND2,         // FSMC NAND 区域2 NCE3片选;
+        FSMC_PCCARD,        // FSMC PC卡区域 NCE4_1/NCE4_2;
+        FSMC_register,      // FSMC 寄存器区域 FSMC控制寄存器;
+        null,
+        MAX_VAL,
     };
 }

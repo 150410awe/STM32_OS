@@ -9,17 +9,20 @@
 #include "../interval.h"
 #include <array>
 #include <cstddef>
+#include "memory_distribution.h"
 
 namespace general::device {
-    // 前向声明
-    static const inline std::array<int_interval, static_cast<size_t>(external_device_type::MAX_VAL)>& init_external_device_memory();
+    // 前向声明, 尽管无法完全 constexpr, 但是一个引用也算是零成本了
+    static constexpr std::array<int_interval, static_cast<size_t>(external_device_type::MAX_VAL)> init_external_device_memory();
+    static constexpr std::array<int_interval, static_cast<size_t>(FSMC_device_type::MAX_VAL)> init_FSMC_device_memory();
     
     // 使用前向声明的函数初始化
-    const inline std::array<int_interval, static_cast<size_t>(external_device_type::MAX_VAL)>& external_device_memory = init_external_device_memory();
+    const inline std::array<int_interval, static_cast<size_t>(external_device_type::MAX_VAL)>& external_device_memory{ init_external_device_memory() };
+    const inline  std::array<int_interval, static_cast<size_t>(FSMC_device_type::MAX_VAL)>& FSMC_device_memory { init_FSMC_device_memory() };
     
-    static const inline std::array<int_interval, static_cast<size_t>(external_device_type::MAX_VAL)>& init_external_device_memory() {
+    static constexpr std::array<int_interval, static_cast<size_t>(external_device_type::MAX_VAL)> init_external_device_memory() {
         // 初始化数组
-        static std::array<int_interval, static_cast<size_t>(external_device_type::MAX_VAL)> external_device_memory{ };
+        std::array<int_interval, static_cast<size_t>(external_device_type::MAX_VAL)> external_device_memory{ };
         
         //AHB1 总线外设 (0x4002 0000 - 0x4002 7FFF)
         external_device_memory[static_cast<size_t>(external_device_type::GPIOA)] = { 0x40020000, 0x400203FF };
@@ -90,15 +93,6 @@ namespace general::device {
         external_device_memory[static_cast<size_t>(external_device_type::TIM11)] = { 0x40014800, 0x40014BFF };
         external_device_memory[static_cast<size_t>(external_device_type::SPI5)] = { 0x40015000, 0x400153FF };
         external_device_memory[static_cast<size_t>(external_device_type::SPI6)] = { 0x40015400, 0x400157FF };
-        // FSMC 区 (0x6000 0000 - 0x9FFF FFFF)
-        external_device_memory[static_cast<size_t>(external_device_type::FSMC_NORSRAM1)] = { 0x60000000, 0x63FFFFFF };  //64MB
-        external_device_memory[static_cast<size_t>(external_device_type::FSMC_NORSRAM2)] = { 0x64000000, 0x67FFFFFF };  //64MB
-        external_device_memory[static_cast<size_t>(external_device_type::FSMC_NORSRAM3)] = { 0x68000000, 0x6BFFFFFF };  //64MB
-        external_device_memory[static_cast<size_t>(external_device_type::FSMC_NORSRAM4)] = { 0x6C000000, 0x6FFFFFFF };  //64MB
-        external_device_memory[static_cast<size_t>(external_device_type::FSMC_NAND1)] = { 0x70000000, 0x7FFFFFFF };  //256MB
-        external_device_memory[static_cast<size_t>(external_device_type::FSMC_NAND2)] = { 0x80000000, 0x8FFFFFFF };  //256MB
-        external_device_memory[static_cast<size_t>(external_device_type::FSMC_PCCARD)] = { 0x90000000, 0x9FFFFFFF };  //256MB
-        external_device_memory[static_cast<size_t>(external_device_type::FSMC_register)] = { 0xA0000000, 0xA0000FFF };  //4KB
         // 内核外设 (0xE000 0000 - 0xE00F FFFF)
         external_device_memory[static_cast<size_t>(external_device_type::NVIC)] = { 0xE000E100, 0xE000E1FF };
         external_device_memory[static_cast<size_t>(external_device_type::SCB)] = { 0xE000ED00, 0xE000EDFF };
@@ -108,6 +102,23 @@ namespace general::device {
         external_device_memory[static_cast<size_t>(external_device_type::ITM)] = { 0xE0000000, 0xE0000FFF };
         external_device_memory[static_cast<size_t>(external_device_type::DWT)] = { 0xE0001000, 0xE0001FFF };
         external_device_memory[static_cast<size_t>(external_device_type::TPIU)] = { 0xE0040000, 0xE0040FFF };
+
+        external_device_memory[static_cast<size_t>(external_device_type::null)] = memory::distribution::null_address_interval;
         return external_device_memory;
+    }
+    static constexpr std::array<int_interval, static_cast<size_t>(FSMC_device_type::MAX_VAL)> init_FSMC_device_memory(){
+        std::array<int_interval, static_cast<size_t>(FSMC_device_type::MAX_VAL)> FSMC_device_memory{ };
+                // FSMC 区 (0x6000 0000 - 0x9FFF FFFF)
+        FSMC_device_memory[static_cast<size_t>(FSMC_device_type::FSMC_NORSRAM1)] = { 0x60000000, 0x63FFFFFF };  //64MB
+        FSMC_device_memory[static_cast<size_t>(FSMC_device_type::FSMC_NORSRAM2)] = { 0x64000000, 0x67FFFFFF };  //64MB
+        FSMC_device_memory[static_cast<size_t>(FSMC_device_type::FSMC_NORSRAM3)] = { 0x68000000, 0x6BFFFFFF };  //64MB
+        FSMC_device_memory[static_cast<size_t>(FSMC_device_type::FSMC_NORSRAM4)] = { 0x6C000000, 0x6FFFFFFF };  //64MB
+        FSMC_device_memory[static_cast<size_t>(FSMC_device_type::FSMC_NAND1)] = { 0x70000000, 0x7FFFFFFF };  //256MB
+        FSMC_device_memory[static_cast<size_t>(FSMC_device_type::FSMC_NAND2)] = { 0x80000000, 0x8FFFFFFF };  //256MB
+        FSMC_device_memory[static_cast<size_t>(FSMC_device_type::FSMC_PCCARD)] = { 0x90000000, 0x9FFFFFFF };  //256MB
+        FSMC_device_memory[static_cast<size_t>(FSMC_device_type::FSMC_register)] = { 0xA0000000, 0xA0000FFF };  //4KB
+
+        FSMC_device_memory[static_cast<size_t>(FSMC_device_type::null)] = memory::distribution::null_address_interval;
+        return FSMC_device_memory;
     }
 }

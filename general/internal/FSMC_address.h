@@ -12,19 +12,26 @@ namespace general::memory {
     using namespace distribution;
     
 struct FSMC_address : address<FSMC_address, block::FSMC> {
-    using address<FSMC_address, block::FSMC>::address;
-    using address<FSMC_address, block::FSMC>::operator=;
-    using address<FSMC_address, block::FSMC>::operator+;
-    using address<FSMC_address, block::FSMC>::operator+=;
-    general::device::external_device_type external_device_type;
+    constexpr FSMC_address()  = default;
+    constexpr FSMC_address(const general::device::FSMC_device_type set_device_type) : FSMC_device_type(set_device_type) {
+        address_value = general::device::FSMC_device_memory[static_cast<size_t>(FSMC_device_type)].start;
+    }
+    FSMC_address& operator=(const general::device::FSMC_device_type set_device_type ) {
+        FSMC_device_type = set_device_type;
+        address_value = general::device::FSMC_device_memory[static_cast<size_t>(FSMC_device_type)].start;
+        return *this;
+    }
+    constexpr FSMC_address& operator+=(const FSMC_address set_address) = delete;
+    constexpr FSMC_address operator+(const FSMC_address set_address) = delete;
+    
+    general::device::FSMC_device_type FSMC_device_type = general::device::FSMC_device_type::null;
 
     constexpr bool check_address() const {
         if (!block_FSMC_snippet.contains(address_value))
             return false;
 
         // 检查外部设备内存是否包含该地址
-        const auto& external_device_memory = general::device::external_device_memory[static_cast<size_t>(external_device_type)];
-        if (!external_device_memory.contains(address_value))
+        if (!general::device::FSMC_device_memory[static_cast<size_t>(FSMC_device_type)].contains(address_value))
             return false;
 
         return true;
@@ -38,13 +45,12 @@ struct FSMC_address : address<FSMC_address, block::FSMC> {
         if (!block_sram_snippet.contains(address_value))
             return false;
 
-        for (size_t i = 0; i < static_cast<size_t>(general::device::external_device_type::MAX_VAL); i++) {
-            const auto external_device_memory = general::device::external_device_memory[i];
-            if (external_device_memory.contains(address_value)) {
-                external_device_type = static_cast<general::device::external_device_type>(i);
+        for (size_t i = 0; i < static_cast<size_t>(general::device::FSMC_device_type::MAX_VAL); i++) 
+            if (general::device::external_device_memory[i].contains(address_value)) {
+                FSMC_device_type = static_cast<general::device::FSMC_device_type>(i);
                 return true;
             }
-        }
+        
         return false;
     }
 };

@@ -96,4 +96,5 @@ namespace general::memory::distribution {
     constexpr int_interval block_reserved_snippet { 0xC0000000, 0xFFFFFFFF };    // 保留区域
     constexpr int_interval peripheral_devices_kernel { 0xE0000000, 0xE00FFFFF };    // 内核外设区
     constexpr max_int_t null_address_value = 0x100000000;// null_address_value - 默认空地址值, 为 null_address 指向的地址值, 一般改不了
+    constexpr int_interval null_address_interval {null_address_value,null_address_value};
 }

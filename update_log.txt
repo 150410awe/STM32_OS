@@ -1,7 +1,92 @@
+2026.2.22.17.55
+DS:
+用你的 gpio_address 去操作寄存器。
+你会发现自己设计的类型用起来有多顺手——比如：
+cpp
+gpio_addr odr { 0x40020014 };
+odr = 0x01;  // 点亮 LED
+编译器会阻止你把 sram_addr 赋值给 odr，这种安全感在裸机上很珍贵。
+...
+有感, 不知道为什么想到,emmmmm, 直接看代码
+    constexpr max_int_t null_address_value = 0x100000000;// null_address_value - 默认空地址值, 为 null_address 指向的地址值, 一般改不了
+    constexpr int_interval null_address_interval {null_address_value,null_address_value};
+    // 前向声明, 尽管无法完全 constexpr, 但是一个引用也算是零成本了
+    static constexpr std::array<int_interval, static_cast<size_t>(external_device_type::MAX_VAL)> init_external_device_memory();
+    static constexpr std::array<int_interval, static_cast<size_t>(FSMC_device_type::MAX_VAL)> init_FSMC_device_memory();
+    
+    // 使用前向声明的函数初始化
+    const inline ...& external_device_memory{ init_external_device_memory() };
+    const inline  ...& FSMC_device_memory { init_FSMC_device_memory() };
+
+external_device_memory[static_cast<size_t>(external_device_type::null)] = memory::distribution::null_address_interval;
+FSMC_device_memory[static_cast<size_t>(FSMC_device_type::null)] = memory::distribution::null_address_interval;
+支持null
+struct peripheral_address : address<peripheral_address, block::peripheral_area> {
+    constexpr peripheral_address() = default;
+    constexpr peripheral_address(const general::device::external_device_type set_device_type) : external_device_type(set_device_type) {
+        address_value = general::device::external_device_memory[static_cast<size_t>(external_device_type)].start;
+    }
+    peripheral_address& operator=(const general::device::external_device_type set_device_type) {
+        external_device_type = set_device_type;
+        address_value = general::device::external_device_memory[static_cast<size_t>(external_device_type)].start;
+        return *this;
+    }
+    constexpr peripheral_address& operator+=(const peripheral_address set_address) = delete;
+    constexpr peripheral_address operator+(const peripheral_address set_address) = delete;
+    general::device::external_device_type external_device_type = general::device::external_device_type::null;
+    ...
+};
+struct FSMC_address : address<FSMC_address, block::FSMC> {
+    constexpr FSMC_address()  = default;
+    constexpr FSMC_address(const general::device::FSMC_device_type set_device_type) : FSMC_device_type(set_device_type) {
+        address_value = general::device::FSMC_device_memory[static_cast<size_t>(FSMC_device_type)].start;
+    }
+    FSMC_address& operator=(const general::device::FSMC_device_type set_device_type ) {
+        FSMC_device_type = set_device_type;
+        address_value = general::device::FSMC_device_memory[static_cast<size_t>(FSMC_device_type)].start;
+        return *this;
+    }
+    constexpr FSMC_address& operator+=(const FSMC_address set_address) = delete;
+    constexpr FSMC_address operator+(const FSMC_address set_address) = delete;
+    ....
+};
+
+    FSMC_address f1{};
+    FSMC_address f2{f1};
+    //FSMC_address f3{100}; error
+    FSMC_address f4{general::device::FSMC_device_type::FSMC_NAND2};
+    FSMC_address f5{general::device::FSMC_device_type::null};
+
+    //f2 = FSMC_address{1000}; error
+    //f2 = &aa_value; error
+    // 因为general::device::FSMC_device_type 不是 constexpr 所以不可以, 这是编绎器的问题, 不星我的问题
+    //constexpr FSMC_address f6{general::device::FSMC_device_type::FSMC_NAND2};
+
+    //f1 += f2; error
+    f1 = f2;
+    // f1 + f2; error
+
+    peripheral_address p1{};
+    peripheral_address p2 = p1;
+    // peripheral_address p3{general::device::FSMC_device_type::FSMC_NAND1} error
+    peripheral_address p4{general::device::external_device_type::ADC1};
+    peripheral_address p5{general::device::external_device_type::null};
+    //...
+这增加了安全性. 还有我不用记内存了. 直接general::device::external_device_type::....
+简单～
+对了. null_address 也是原规上不可以修改 address_value
+// NULL 不可以修改
+    constexpr null_address& operator=(max_int_t set_address) = delete;
+    constexpr null_address& operator+=(const max_int_t set_address) = delete;
+    constexpr null_address operator+(const max_int_t set_address) const = delete;
+    constexpr null_address operator+(const null_address set_address) const = delete;
+......
+对的.就这样了. 这是一个小补丁
+0.00.02 小补丁, 地址类型加强, 增加了安全性和简单性
 2026.2.22.16.35
 我终于写完了外设类型与外设地址, 我使用了 CRTP emmmm,
 好吧, 为了安全性,他更复杂了.
-还好使用起来比较无脑, 对 constexpr 的支持也没问题
+还好使用起来比较无脑, 看着对 constexpr 的支持好像也没问题
 他可能更安全了, any int 不可以对他 operator=
 code_address c112{100};
 c112 = 1000; error
@@ -43,6 +128,7 @@ constexpr bool update() {
 看着还不错.
 但是 general::device::external_device_memory 不知道为啥不可以加 constexpr . 非常弱智.
 0.00.02 外设类型,地址. 地址类型细分,加强
+已更改 18 个文件, 693 行插入(+), 523 行删除(-)
 2026.2.21.20.21
 增加了对 clangd 的支持. 
 增加了
