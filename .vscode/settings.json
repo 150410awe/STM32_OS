@@ -44,32 +44,29 @@
         "atomic": "cpp",
         "concepts": "cpp",
         "stdexcept": "cpp",
-        "numbers": "cpp"
+        "numbers": "cpp",
+        "*.h": "cpp",
+        "*.hpp": "cpp"
     },
     
-    "clangd.enabled": true,
-    "clangd.path": "F:\\App\\LLVM\\bin\\clangd.exe",
-    "clangd.arguments": [
-        "--compile-commands-dir=.",
-        "--background-index=false",
-        "--clang-tidy",
-        "--completion-style=detailed",
-        "--header-insertion=never",
-        "--query-driver=F:\\App\\LLVM\\bin\\clang++.exe"
-    ],
+    "clangd.enabled": false,
     
-    "C_Cpp.intelliSenseEngine": "disabled",
-    "C_Cpp.autocomplete": "Disabled",
-    "C_Cpp.errorSquiggles": "Disabled",
+    "C_Cpp.intelliSenseEngine": "default",
+    "C_Cpp.autocomplete": "default",
+    "C_Cpp.errorSquiggles": "enabled",
+    "C_Cpp.formatting": "disabled",
     
-    "editor.quickSuggestions": {
-        "other": true,
-        "comments": false,
-        "strings": false
+    "[cpp]": {
+        "editor.defaultFormatter": "ms-vscode.cpptools"
+    },
+    "[c]": {
+        "editor.defaultFormatter": "xaver.clang-format"
+    },
+    "[h]": {
+        "editor.defaultFormatter": "xaver.clang-format"
     },
     
-    "editor.suggest.snippetsPreventQuickSuggestions": false,
-    "editor.acceptSuggestionOnCommitCharacter": true,
-    "editor.suggestOnTriggerCharacters": true,
-    "editor.tabCompletion": "on",
+    "editor.formatOnSave": true,
+    "editor.formatOnType": false,
+    "editor.formatOnPaste": false
 }

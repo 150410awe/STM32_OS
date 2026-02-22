@@ -6,6 +6,7 @@
 
 #include "internal/foundation_type.h"
 
+namespace general {
 /**
  * interval - 数学区间
  * @note 全闭区间
@@ -20,6 +21,7 @@ struct interval {
      * @param end 区间结束
      */
     constexpr interval(T start, T end) : start(start), end(end) {}
+    constexpr interval() {}
     /**
      * contains - 判断值是否在区间内
      * @param value 值
@@ -29,6 +31,7 @@ struct interval {
         return start <= value && value <= end;
     }
 };
+}
 
-using int_interval = interval<max_int_t>;
-using float_interval = interval<float>;
+using int_interval = general::interval<max_int_t>;
+using float_interval = general::interval<float>;

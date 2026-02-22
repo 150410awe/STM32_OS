@@ -1,3 +1,48 @@
+2026.2.22.16.35
+我终于写完了外设类型与外设地址, 我使用了 CRTP emmmm,
+好吧, 为了安全性,他更复杂了.
+还好使用起来比较无脑, 对 constexpr 的支持也没问题
+他可能更安全了, any int 不可以对他 operator=
+code_address c112{100};
+c112 = 1000; error
+max_int_t aa_value = 100;
+    aa = &aa_value;
+auto aa = a2 + code_address{100};
+    auto bb = a2 + aa;
+    auto cc = a2 += code_address{10};
+    auto dd = aa = code_address{10};
+    constexpr code_address c1{1000};
+    constexpr code_address c2{c1};
+    constexpr auto c3 = c1 + c2;
+    constexpr code_address c4 = c3;
+    constexpr null_address c13{};
+constexpr address_t operator+(const address_t set_address)
+constexpr address_t& operator+=(const address_t set_address)
+address_t& operator=(max_int_t* set_address)
+这使得类型更安全. 但是我心还是没底.
+我在想有没有必须写不同类型地址的转换. emmmmm, 后面可能去掉.
+因为他有点不安全.
+if (!update() || !check_address()) {
+    address_value = null_address_value;
+    // error...
+}
+constexpr bool check_address() const {
+    return static_cast<const address_t*>(this)->check_address();
+}
+constexpr bool update() {
+    return static_cast<address_t*>(this)->update();
+}
+这个, 应该是先update()在check_address(), 应该不会有问题.
+我为了防止循环引用,拆了address_struct.h 分对应的几个类型的文件.
+原则上 struct address 不可以直接写.
+这几个类型地址原则上完全不是一会事.
+// 检查外部设备内存是否包含该地址
+        const auto& external_device_memory = general::device::external_device_memory[static_cast<size_t>(external_device_type)];
+        if (!external_device_memory.contains(address_value))
+            return false;
+看着还不错.
+但是 general::device::external_device_memory 不知道为啥不可以加 constexpr . 非常弱智.
+0.00.02 外设类型,地址. 地址类型细分,加强
 2026.2.21.20.21
 增加了对 clangd 的支持. 
 增加了
@@ -25,7 +70,9 @@ variadic lmn_enum_struct_bit_mask copy 过来...
 我可不造一个va_start出来.
 引入 lmn_enum_struct_bit_mask 
 --23.22
-0.00.02 增加了 general::memory::distribution::address::check_address(), update_block_type 整合到check_address, 引入 lmn_enum_struct_bit_mask 
+0.00.02 增加了 general::memory::distribution::address::check_address(), update_block_type 整合到check_address, 引入 lmn_enum_struct_bit_mask
+已更改 9 个文件, 312 行插入(+), 89 行删除(-)
+妈的我终于配置好了这个clangd 的傻逼格式化, 无语, 怎么地还都不行
 2026.2.21.11.45
 哦1145...
 

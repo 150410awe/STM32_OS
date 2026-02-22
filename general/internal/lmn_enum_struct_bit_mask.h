@@ -8,8 +8,8 @@
  * @tparam struct_t - 枚举结构体类型（Enum Struct Type）
  * @tparam enum_t - 枚举类型（Enum Type）
  */
-template <typename struct_t, typename enum_t>
-struct lmn_enum_struct_bit_mask {
+namespace general {
+template <typename struct_t, typename enum_t> struct lmn_enum_struct_bit_mask {
     int64_t data;
     constexpr lmn_enum_struct_bit_mask() : data { 0 } {}
     constexpr lmn_enum_struct_bit_mask(enum_t value) : data { static_cast<int64_t>(value) } {}
@@ -32,3 +32,4 @@ struct lmn_enum_struct_bit_mask {
     constexpr bool operator>=(lmn_enum_struct_bit_mask a) const { return this->data >= a.data; }
     constexpr bool operator<=(lmn_enum_struct_bit_mask a) const { return this->data <= a.data; }
 };
+}
