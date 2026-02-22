@@ -14,11 +14,11 @@ namespace general::memory {
 struct FSMC_address : address<FSMC_address, block::FSMC> {
     constexpr FSMC_address()  = default;
     constexpr FSMC_address(const general::device::FSMC_device_type set_device_type) : FSMC_device_type(set_device_type) {
-        address_value = general::device::FSMC_device_memory[static_cast<size_t>(FSMC_device_type)].start;
+        address_value = general::device::FSMC_device_memory[FSMC_device_type].start;
     }
     FSMC_address& operator=(const general::device::FSMC_device_type set_device_type ) {
         FSMC_device_type = set_device_type;
-        address_value = general::device::FSMC_device_memory[static_cast<size_t>(FSMC_device_type)].start;
+        address_value = general::device::FSMC_device_memory[FSMC_device_type].start;
         return *this;
     }
     constexpr FSMC_address& operator+=(const FSMC_address set_address) = delete;
@@ -31,7 +31,7 @@ struct FSMC_address : address<FSMC_address, block::FSMC> {
             return false;
 
         // 检查外部设备内存是否包含该地址
-        if (!general::device::FSMC_device_memory[static_cast<size_t>(FSMC_device_type)].contains(address_value))
+        if (!general::device::FSMC_device_memory[FSMC_device_type].contains(address_value))
             return false;
 
         return true;
@@ -46,7 +46,7 @@ struct FSMC_address : address<FSMC_address, block::FSMC> {
             return false;
 
         for (size_t i = 0; i < static_cast<size_t>(general::device::FSMC_device_type::MAX_VAL); i++) 
-            if (general::device::external_device_memory[i].contains(address_value)) {
+            if (general::device::FSMC_device_memory[static_cast<general::device::FSMC_device_type>(i)].contains(address_value)) {
                 FSMC_device_type = static_cast<general::device::FSMC_device_type>(i);
                 return true;
             }

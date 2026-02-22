@@ -37,7 +37,7 @@ void text() {
     //f2 = FSMC_address{1000}; error
     //f2 = &aa_value; error
     // 因为general::device::FSMC_device_type 不是 constexpr 所以不可以, 这是编绎器的问题, 不星我的问题
-    //constexpr FSMC_address f6{general::device::FSMC_device_type::FSMC_NAND2};
+    constexpr FSMC_address f6{general::device::FSMC_device_type::FSMC_NAND2}; //现在可以了
 
     //f1 += f2; error
     f1 = f2;
@@ -49,4 +49,6 @@ void text() {
     peripheral_address p4{general::device::external_device_type::ADC1};
     peripheral_address p5{general::device::external_device_type::null};
     //...
+    //const auto c1cc = general::device::external_device_memory[10]; //error
+    const auto c1cc = general::device::external_device_memory[general::device::external_device_type::null];
 }

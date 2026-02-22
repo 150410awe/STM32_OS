@@ -5,7 +5,7 @@ CompileFlags:
   # 添加额外的编译标志 - 针对嵌入式环境优化
   Add: 
     - -xc++
-    - -std=gnu++17
+    - -std=gnu++23
     - -D__GNUC__
     - -D__clang__
     - -D__ARM_ARCH_7M__

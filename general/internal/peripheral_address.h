@@ -14,11 +14,11 @@ namespace general::memory {
 struct peripheral_address : address<peripheral_address, block::peripheral_area> {
     constexpr peripheral_address() = default;
     constexpr peripheral_address(const general::device::external_device_type set_device_type) : external_device_type(set_device_type) {
-        address_value = general::device::external_device_memory[static_cast<size_t>(external_device_type)].start;
+        address_value = general::device::external_device_memory[external_device_type].start;
     }
     peripheral_address& operator=(const general::device::external_device_type set_device_type) {
         external_device_type = set_device_type;
-        address_value = general::device::external_device_memory[static_cast<size_t>(external_device_type)].start;
+        address_value = general::device::external_device_memory[external_device_type].start;
         return *this;
     }
     constexpr peripheral_address& operator+=(const peripheral_address set_address) = delete;
@@ -35,7 +35,7 @@ struct peripheral_address : address<peripheral_address, block::peripheral_area> 
             return false;
 
         // 检查外部设备内存是否包含该地址
-        const auto& external_device_memory = general::device::external_device_memory[static_cast<size_t>(external_device_type)];
+        const auto& external_device_memory = general::device::external_device_memory[external_device_type];
         if (!external_device_memory.contains(address_value))
             return false;
 
@@ -50,8 +50,7 @@ struct peripheral_address : address<peripheral_address, block::peripheral_area> 
             return false;
 
         for (size_t i = 0; i < static_cast<size_t>(general::device::external_device_type::MAX_VAL); i++) {
-            const auto external_device_memory = general::device::external_device_memory[i];
-            if (external_device_memory.contains(address_value)) {
+            if (general::device::external_device_memory[static_cast<general::device::external_device_type>(i)].contains(address_value)) {
                 external_device_type = static_cast<general::device::external_device_type>(i);
                 return true;
             }

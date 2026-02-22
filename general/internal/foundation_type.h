@@ -6,6 +6,7 @@
 */
 
 #include <cstdint>
+#include <cstddef>
 
 namespace general::type {
     using max_int_t = std::intmax_t;

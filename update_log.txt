@@ -1,3 +1,12 @@
+2026.2.22.20.08
+我和external_device_memory_distribution.h又斗了一会.
+现在完全是编译时了, 主要是更加安全,可读性更强
+any int 不可以直接引用
+general::device::external_device_memory[external_device_type].start
+general::device::external_device_memory[static_cast<general::device::external_device_type>(i)].contains(address_value)
+const auto c1cc = general::device::external_device_memory[general::device::external_device_type::null];
+emmmmm, 尽管我写的难受, 但是使用还是很好
+0.00.02 小补丁, FSMC_device_memory, external_device_memory 完全编译期. 增加了安全性和可读性
 2026.2.22.17.55
 DS:
 用你的 gpio_address 去操作寄存器。
@@ -83,6 +92,7 @@ struct FSMC_address : address<FSMC_address, block::FSMC> {
 ......
 对的.就这样了. 这是一个小补丁
 0.00.02 小补丁, 地址类型加强, 增加了安全性和简单性
+已更改 8 个文件, 179 行插入(+), 45 行删除(-)
 2026.2.22.16.35
 我终于写完了外设类型与外设地址, 我使用了 CRTP emmmm,
 好吧, 为了安全性,他更复杂了.
