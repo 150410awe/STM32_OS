@@ -1,3 +1,74 @@
+2026.2.23.17.35
+太不容易了, 我终于完成GPIO 的基础写功能. 使用大概是这样
+    GPIOA[1] = true;
+    GPIO[1][2] = false;
+    GPIOD[10] = kernel::device::GPIO::AF15::EVENTOUT;
+    GPIOD[10] = kernel::device::GPIO::AF7::USART3;
+这行不容易
+我写了8个小时.
+先实现了 clock_enable h clock_enable_peripheral_clock.h h RCC_config.h h RCC_register_config.h
+后面可以使用GPIO. 还写了GPIO寄存器的区间地址, 方便后面检查地址和法性
+然后开始实现GPIO struct
+一开始想使用模板特化 编译时 计算寄存器地址, 
+然后写引脚, 因为我GPIO设计用的是编译时 所以pin也是编译时 我想对每个pin都在编译时计算地址, 但是不行. 
+所以只能去掉编译时了, 在开始时计算. 使用
+        peripheral_address GPIO_address;
+        u8 pin_id;
+写值. 非常弱智的
+        pin& operator=(work_mode mode);
+        pin& operator=(output_type type);
+        pin& operator=(pull_up_down pull);
+        pin& operator=(output_speed speed);
+        pin& operator=(bool ODR_or_IDR);
+        pin& operator=(AF0 af0);
+        pin& operator=(AF1 af1);
+        pin& operator=(AF2 af2);
+        pin& operator=(AF3 af3);
+        pin& operator=(AF4 af4);
+        pin& operator=(AF5 af5);
+        pin& operator=(AF6 af6);
+        pin& operator=(AF7 af7);
+        pin& operator=(AF8 af8);
+        pin& operator=(AF9 af9);
+        pin& operator=(AF10 af10);
+        pin& operator=(AF11 af11);
+        pin& operator=(AF12 af12);
+        pin& operator=(AF13 af13);
+        pin& operator=(AF14 af14);
+        pin& operator=(AF15 af15);
+但是简单. .cpp文件干到了429行, 都是有很多重复的代码.
+重点在怎么实现GPIO[1][2].
+GPIO[1]要返回的应该是pin&
+所以pin要自己计算, 也是为什么想对每个pin都在编译时计算地址.
+那样很简单.
+这日记说的感觉没什么. 但是真的耗时. 还干了别的事.
+我都他妈的在写代码了. 
+我心还是没底.
+这还没完. 后面还有检查.
+之所以先写GPIO就是因为他重要.
+后面方便点灯. 我真的非常无语用标准库写的什么狗屁东西.
+这是标准库
+// 配置PC13为推挽输出（通常连接LED）
+GPIOC->MODER &= ~GPIO_MODER_MODER13;      // 清零
+GPIOC->MODER |= GPIO_MODER_MODER13_0;      // 设为01：通用输出模式
+GPIOC->OTYPER &= ~GPIO_OTYPER_OT_13;       // 推挽输出
+GPIOC->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR13; // 设为高速
+GPIOC->PUPDR &= ~GPIO_PUPDR_PUPDR13;       // 无上拉/下拉
+// 点亮LED
+GPIOC->BSRR = GPIO_BSRR_BS_13;              // 置位（输出高）
+// 熄灭LED
+GPIOC->BSRR = GPIO_BSRR_BR_13;              // 复位（输出低）
+这是我写的
+    GPIOC[13] = kernel::device::GPIO::work_mode::alternate_function_push_pull;
+    GPIOC[13] = kernel::device::GPIO::output_type::push_pull;
+    GPIOC[13] = kernel::device::GPIO::output_speed::very_high_speed;
+    GPIOC[13] = kernel::device::GPIO::pull_up_down::no_pull;
+    GPIOC[13] = 0x0b1;
+    GPIOC[13] = 0x0b0;
+
+这以后,后面就是我的标准库了.
+好了. 这就是更新内容了
+0.00.03 GPIO 对少量支持
 2026.2.22.20.08
 我和external_device_memory_distribution.h又斗了一会.
 现在完全是编译时了, 主要是更加安全,可读性更强
@@ -7,6 +78,7 @@ general::device::external_device_memory[static_cast<general::device::external_de
 const auto c1cc = general::device::external_device_memory[general::device::external_device_type::null];
 emmmmm, 尽管我写的难受, 但是使用还是很好
 0.00.02 小补丁, FSMC_device_memory, external_device_memory 完全编译期. 增加了安全性和可读性
+已更改 8 个文件, 159 行插入(+), 109 行删除(-)
 2026.2.22.17.55
 DS:
 用你的 gpio_address 去操作寄存器。

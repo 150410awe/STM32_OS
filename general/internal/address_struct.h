@@ -99,5 +99,15 @@ template <class address_t, block block_type> struct address {
     constexpr bool update() {
         return static_cast<address_t*>(this)->update();
     }
+    constexpr bool offset(max_int_t offset) {
+        address_value += offset;
+        // 检查地址是否在指定的内存块类型范围内
+        if (!update() || !check_address()) {
+            address_value = null_address_value;
+            // error...
+            return false;
+        }
+        return true;
+    }
 };
 }

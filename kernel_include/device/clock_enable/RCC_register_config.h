@@ -1,0 +1,29 @@
+#pragma once
+
+#include "../../../general/type.h"
+
+namespace kernel::device::RCC {
+    enum class RCC_register_type : u8 {
+        CR = 0x00,           // 时钟控制 - 控制HSI、HSE、CSS、PLL使能
+        PLLCFGR = 0x04,      // PLL配置 - 配置主PLL参数
+        CFGR = 0x08,         // 时钟配置 - 系统时钟选择、分频器配置
+        CIR = 0x0C,          // 时钟中断 - 时钟中断控制
+        AHB1RSTR = 0x10,    // AHB1复位 - AHB1外设复位
+        AHB2RSTR = 0x14,    // AHB2复位 - AHB2外设复位
+        AHB3RSTR = 0x18,    // AHB3复位 - AHB3外设复位
+        APB1RSTR = 0x20,    // APB1复位 - APB1外设复位
+        APB2RSTR = 0x24,    // APB2复位 - APB2外设复位
+        AHB1ENR = 0x30,     // AHB1使能 - AHB1外设时钟使能
+        AHB2ENR = 0x34,     // AHB2使能 - AHB2外设时钟使能
+        AHB3ENR = 0x38,     // AHB3使能 - AHB3外设时钟使能
+        APB1ENR = 0x40,     // APB1使能 - APB1外设时钟使能
+        APB2ENR = 0x44,     // APB2使能 - APB2外设时钟使能
+        AHB1LPENR = 0x50,   // AHB1低功耗 - 睡眠模式AHB1时钟使能
+        AHB2LPENR = 0x54,   // AHB2低功耗 - 睡眠模式AHB2时钟使能
+        AHB3LPENR = 0x58,   // AHB3低功耗 - 睡眠模式AHB3时钟使能
+        APB1LPENR = 0x60,   // APB1低功耗 - 睡眠模式APB1时钟使能
+        APB2LPENR = 0x64,   // APB2低功耗 - 睡眠模式APB2时钟使能
+        BDCR = 0x70,        // 备份域控制 - LSE、RTC时钟控制
+        CSR = 0x74,         // 时钟状态 - 复位标志、LSI控制
+    };
+}

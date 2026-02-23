@@ -33,3 +33,45 @@ template <typename struct_t, typename enum_t> struct lmn_enum_struct_bit_mask {
     constexpr bool operator<=(lmn_enum_struct_bit_mask a) const { return this->data <= a.data; }
 };
 }
+/**
+ * basic_bit_mask_operation - 基础位掩码操作（Basic Bit Mask Operation）
+ * @note 定义枚举类型的基础按位操作，包括按位或、按位与、按位异或、按位取反
+ * @param enum_t - 枚举类型（Enum Type）, 我是懒写那些按位操作. 但是他还算清楚, 简单.
+ */
+#define basic_bit_mask_operation(enum_t) \
+constexpr enum_t operator|(enum_t lhs, enum_t rhs) { \
+        return static_cast<enum_t>(static_cast<max_int_t>(lhs) | static_cast<max_int_t>(rhs)); \
+    } \
+    constexpr enum_t operator&(enum_t lhs, enum_t rhs) { \
+        return static_cast<enum_t>(static_cast<max_int_t>(lhs) & static_cast<max_int_t>(rhs)); \
+    } \
+    constexpr enum_t operator^(enum_t lhs, enum_t rhs) { \
+        return static_cast<enum_t>(static_cast<max_int_t>(lhs) ^ static_cast<max_int_t>(rhs)); \
+    } \
+    constexpr enum_t operator~(enum_t value) { \
+        return static_cast<enum_t>(~static_cast<max_int_t>(value)); \
+    } \
+    constexpr bool operator==(enum_t lhs, enum_t rhs) { \
+        return static_cast<max_int_t>(lhs) == static_cast<max_int_t>(rhs); \
+    } \
+    constexpr bool operator!=(enum_t lhs, enum_t rhs) { \
+        return !(lhs == rhs); \
+    } \
+    constexpr bool operator>(enum_t lhs, enum_t rhs) { \
+        return static_cast<max_int_t>(lhs) > static_cast<max_int_t>(rhs); \
+    } \
+    constexpr bool operator<(enum_t lhs, enum_t rhs) { \
+        return static_cast<max_int_t>(lhs) < static_cast<max_int_t>(rhs); \
+    } \
+    constexpr bool operator>=(enum_t lhs, enum_t rhs) { \
+        return static_cast<max_int_t>(lhs) >= static_cast<max_int_t>(rhs); \
+    } \
+    constexpr bool operator<=(enum_t lhs, enum_t rhs) { \
+        return static_cast<max_int_t>(lhs) <= static_cast<max_int_t>(rhs); \
+    } \
+    constexpr max_int_t operator<<(enum_t lhs, int rhs) { \
+        return static_cast<max_int_t>(lhs) << rhs; \
+    } \
+    constexpr max_int_t operator>>(enum_t lhs, int rhs) { \
+        return static_cast<max_int_t>(lhs) >> rhs; \
+    }

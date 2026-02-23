@@ -7,13 +7,13 @@
 #include "internal/address_struct.h"
 #include "internal/foundation_type.h"
 #include "internal/external_device_type.h"
-#include "internal/lmn_enum_struct_bit_mask.h"
 #include "internal/null_address.h"
 #include "internal/SRAM_address.h"
 #include "internal/peripheral_address.h"
 #include "internal/reserved_address.h"
 #include "internal/code_address.h"
 #include "internal/FSMC_address.h"
+#include "internal/lmn_enum_struct_bit_mask.h"
 
 
 using namespace general::type;
@@ -23,4 +23,6 @@ using general::memory::null_address;
 using general::memory::peripheral_address;
 using general::memory::reserved_address;
 using general::memory::SRAM_address;
-
+using general::device::external_device_type;
+using general::device::FSMC_device_type;
+using general::lmn_enum_struct_bit_mask;
