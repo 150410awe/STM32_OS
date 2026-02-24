@@ -1,3 +1,79 @@
+2026.2.24.21.00
+经过我的思考后, 我决定先实现内存管理.
+内存分布是这样的,
+0x2000 0000 - 0x2001 BFFF：SRAM1（112KB，所有 AHB 主控可访问）
+0x2001 C000 - 0x2001 FFFF：SRAM2（16KB，所有 AHB 主控可访问）
+0x1000 0000 - 0x1000 FFFF：CCM SRAM（64KB，内核耦合存储器，仅 CPU 可访问）
+我现在应该只用, 也最急用的就是 基本的增删改查 因为我内核会用. 
+还后也没什么了. 因为按一般的想法就是给内存分区
+所以先设计好内存分区吧. 我要了解一些东西.
+21.20
+okk 我现在已经非常解了. 
+程序运行时从0x20000000 (SRAM1起始).
+那么我就设定相应的内存布局, 我简单一点.
+0x20000000 - 某个地方 内核区
+内核区 - SRAM2结束为用户区.
+内核堆数据可能可以在用户区.
+但那样可能不安全对吧?! 没事, 简单点.
+我会自己写一个堆内存的增删. 就是 new 与 delete.
+我先给内存分个块.
+经过我的深思后决定 512 一块
+一共384.
+占内存0.7%. 还算可以?
+emmmmm, 所以写一个内存结构出来
+我终于写出来了内存结构和内存的增删. 但是, 我要记录那个地址被使用
+这要用哈希表, 还有那个内存没用, 这要用list.
+但是这些东西我没写内存管理也没用啊.
+后面我只能用数组模拟一个了. 也就是说记录是有限的
+我去掉了之前的块定义, 因为那不好实现连续的内存分配.
+直接一个
+// general::memory::block_SRAM_snippet.start只是临时. 因为内核内存不算
+inline static std::list<memory> empty_memory_queue{memory{static_cast<SRAM_address>(general::memory::block_SRAM_snippet.start), SRAM_size}};
+硬写, 我想一开始应该都是空. 后面动态增删.
+namespace kernel::call {
+    using namespace memory;
+    inline void* malloc(size_t size) {
+        if (size == 0)
+            return nullptr;
+        
+        for (auto it = empty_memory_queue.begin(); it != empty_memory_queue.end(); ++it) 
+            if (it->size >= size) {
+                void* result = reinterpret_cast<void*>(it->base_address.address_value);
+                size_t allocated_size = size;
+                
+                use_memory.emplace(std::pair{ it->base_address.address_value , allocated_size });
+                if (it->size == size) 
+                    // 完全匹配，从空闲队列中删除
+                    empty_memory_queue.erase(it);
+                else {
+                    // 分割块，更新剩余部分, 让base_address向高地址方向
+                    it->base_address.offset(it->base_address.address_value + size);
+                    it->size -= size;
+                }
+
+                return result;
+            }
+        return nullptr;
+    }
+    inline void free(void* free_address) {
+        if (free_address == nullptr)
+            return;
+        
+        auto it = use_memory.find(reinterpret_cast<u32>(free_address));
+        if (it == use_memory.end())
+            return;
+        
+        size_t freed_size = it->second;
+        use_memory.erase(it);
+
+        empty_memory_queue.push_back(kernel::memory::memory{SRAM_address{reinterpret_cast<u32>(free_address)}, freed_size});
+    }
+}
+use_memory.emplace(it.base_address.address_value, size);use_memory.erase(it);
+动态增删记录.
+但, 因为后面就是数组了, 所以在内存上不是动态. 这会有内存碎与问题. 但很可能那个时候就因为 数组 满了不让玩了.
+乐. 这就是半个内存管理了. 
+2026.2.25.0.09 内存管理增删
 2026.2.24.13.08
 我用了一个小时, 完成了时钟使能寄存器.
 现在应该可以支持GPIO的设置了. 就只有时钟使能寄存器
@@ -33,6 +109,7 @@ pin& operator=(work_mode mode)
 里面与硬件交互.
 总的来说比较简单.
 0.00.04 时钟使能寄存器 少量支持
+已更改 15 个文件, 186 行插入(+), 460 行删除(-)
 2026.2.23.17.35
 太不容易了, 我终于完成GPIO 的基础写功能. 使用大概是这样
     GPIOA[1] = true;

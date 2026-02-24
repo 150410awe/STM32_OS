@@ -46,7 +46,7 @@ struct peripheral_address : address<peripheral_address, block::peripheral_area> 
      * @return 如果更新成功则返回true，否则返回false
      */
     constexpr bool update() {
-        if (!block_sram_snippet.contains(address_value))
+        if (!block_SRAM_snippet.contains(address_value))
             return false;
 
         for (size_t i = 0; i < static_cast<size_t>(general::device::external_device_type::MAX_VAL); i++) {

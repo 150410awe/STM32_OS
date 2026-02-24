@@ -19,7 +19,7 @@ struct SRAM_address : address<SRAM_address, block::sram> {
     using address<SRAM_address, block::sram>::operator+=;
 
     constexpr bool check_address() const {
-        if (!block_sram_snippet.contains(address_value))
+        if (!block_SRAM_snippet.contains(address_value))
             return false;
 
         if (SRAM_snippet::reserved_area1.contains(address_value) ||
@@ -30,7 +30,7 @@ struct SRAM_address : address<SRAM_address, block::sram> {
         return true;
     }
     constexpr bool update() {
-        return block_sram_snippet.contains(address_value);
+        return block_SRAM_snippet.contains(address_value);
     }
 };
 }

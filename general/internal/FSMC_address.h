@@ -42,7 +42,7 @@ struct FSMC_address : address<FSMC_address, block::FSMC> {
      * @return 如果更新成功则返回true，否则返回false
      */
     constexpr bool update() {
-        if (!block_sram_snippet.contains(address_value))
+        if (!block_SRAM_snippet.contains(address_value))
             return false;
 
         for (size_t i = 0; i < static_cast<size_t>(general::device::FSMC_device_type::MAX_VAL); i++) 

@@ -90,11 +90,11 @@ namespace general::memory::distribution {
     }
 
     constexpr int_interval block_code_snippet { 0x00000000, 0x1FFFFFFF };    // 代码区
-    constexpr int_interval block_sram_snippet { 0x20000000, 0x3FFFFFFF };    // SRAM 区
+    constexpr int_interval block_SRAM_snippet { 0x20000000, 0x3FFFFFFF };    // SRAM 区
     constexpr int_interval block_peripheral_snippet { 0x40000000, 0x5FFFFFFF };    // 外设区
     constexpr int_interval block_FSMC_snippet { 0x60000000, 0x9FFFFFFF };    // FSMC 区
     constexpr int_interval block_reserved_snippet { 0xC0000000, 0xFFFFFFFF };    // 保留区域
     constexpr int_interval peripheral_devices_kernel { 0xE0000000, 0xE00FFFFF };    // 内核外设区
-    constexpr max_int_t null_address_value = 0x100000000;// null_address_value - 默认空地址值, 为 null_address 指向的地址值, 一般改不了
+    constexpr u32 null_address_value = 0x100000000;// null_address_value - 默认空地址值, 为 null_address 指向的地址值, 一般改不了
     constexpr int_interval null_address_interval {null_address_value,null_address_value};
 }

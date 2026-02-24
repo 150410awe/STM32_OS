@@ -12,12 +12,12 @@ void text() {
     a5 = a3;
     SRAM_address a6 { 1545 };
     int32_t a7 = 100;
-    SRAM_address a8{reinterpret_cast<max_int_t*>(a7)};
+    SRAM_address a8{reinterpret_cast<u32*>(a7)};
     auto aa = a2 + code_address{100};
     auto bb = a2 + aa;
     auto cc = a2 += code_address{10};
     auto dd = aa = code_address{10};
-    max_int_t aa_value = 100;
+    u32 aa_value = 100;
     aa = &aa_value;
     constexpr code_address c1{1000};
     constexpr code_address c2{c1};
