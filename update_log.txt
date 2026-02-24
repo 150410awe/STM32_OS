@@ -1,3 +1,38 @@
+2026.2.24.13.08
+我用了一个小时, 完成了时钟使能寄存器.
+现在应该可以支持GPIO的设置了. 就只有时钟使能寄存器
+其他的  时钟配置寄存器,PLL配置寄存器. 时钟控制寄存器...
+全部没写, 点灯不会用到他. 我用宏去掉了
+pin& operator=(AF0 af0);
+...
+这种东西, 因为这个傻逼编译器好像不支持c++20, 我操你奶.只能用宏
+__operator_AF__(AF0)
+__operator_AF__(AF1)
+...
+使用起来也是一样简单
+    AHB1ENR = AHB1_peripheral_clock::GPIOA;
+    // AHB2ENR = AHB1_peripheral_clock::DMA1; error
+    AHB3ENR = AHB3_peripheral_clock::FSMC;
+但是他现在还没有 释放 的功能,
+当然前的架构对RAII支持不太好. 因为都是全局变量. 可以写一个上层的类. 只有对与的引用
+然后用RAII释放. 
+这样的架构就三层
+上层 一个非常简单的类 主要实现RAII.
+中层 GPIO数组. 有实体数据.
+下层 pin直接与硬件交互.
+上层使用时返回中层数据. 中层使用时返回下层数据. 下层与硬件交互.
+为什么是返回数据.
+因为 GPIO 实现就是这样的.
+pin& operator[](size_t index) {
+    return pins[index];
+}
+返回下层pin&.
+pin
+然后在次
+pin& operator=(work_mode mode)
+里面与硬件交互.
+总的来说比较简单.
+0.00.04 时钟使能寄存器 少量支持
 2026.2.23.17.35
 太不容易了, 我终于完成GPIO 的基础写功能. 使用大概是这样
     GPIOA[1] = true;
@@ -69,6 +104,7 @@ GPIOC->BSRR = GPIO_BSRR_BR_13;              // 复位（输出低）
 这以后,后面就是我的标准库了.
 好了. 这就是更新内容了
 0.00.03 GPIO 对少量支持
+已更改 19 个文件, 1132 行插入(+), 3 行删除(-)
 2026.2.22.20.08
 我和external_device_memory_distribution.h又斗了一会.
 现在完全是编译时了, 主要是更加安全,可读性更强

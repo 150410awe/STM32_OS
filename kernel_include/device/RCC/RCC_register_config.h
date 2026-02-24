@@ -26,4 +26,18 @@ namespace kernel::device::RCC {
         BDCR = 0x70,        // 备份域控制 - LSE、RTC时钟控制
         CSR = 0x74,         // 时钟状态 - 复位标志、LSI控制
     };
+    namespace address {
+        namespace {
+            constexpr peripheral_address RCC_register_address(RCC_register_type type) {
+                peripheral_address ret = external_device_type::RCC;
+                ret.offset(static_cast<size_t>(type));
+                return ret;
+            }
+        }
+        static constexpr peripheral_address AHB1ENR = RCC_register_address(RCC_register_type::AHB1ENR);
+        static constexpr peripheral_address AHB2ENR = RCC_register_address(RCC_register_type::AHB2ENR);
+        static constexpr peripheral_address AHB3ENR = RCC_register_address(RCC_register_type::AHB3ENR);
+        static constexpr peripheral_address APB1ENR = RCC_register_address(RCC_register_type::APB1ENR);
+        static constexpr peripheral_address APB2ENR = RCC_register_address(RCC_register_type::APB2ENR);
+    };
 }

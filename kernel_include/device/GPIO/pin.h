@@ -1,10 +1,32 @@
 #pragma once
 
-#include "pin_id.h"
 #include "work_mode.h"
 #include "output_speed_config.h"
 #include "reuse_function_id.h"
 #include "register_config.h"
+#include <type_traits>
+
+// 这个傻逼不支持c++20, 所以我用宏了. 我操你奶.
+#define __operator_AF__(AF)  \
+    inline pin& operator=(AF af) { \
+            volatile u32* afr_ptr; \
+            u32 bit_offset; \
+\
+            if (pin_id < 8) {\
+                afr_ptr = reinterpret_cast<volatile u32*>(GPIO_address.address_value + static_cast<max_int_t>(register_type::AFRL)); \
+                bit_offset = pin_id * 4; \
+            } else { \
+                afr_ptr = reinterpret_cast<volatile u32*>(GPIO_address.address_value + static_cast<max_int_t>(register_type::AFRH)); \
+                bit_offset = (pin_id - 8) * 4; \
+            } \
+ \
+            u32 mask = 0b1111 << bit_offset; \
+ \
+            *afr_ptr &= ~mask; \
+            *afr_ptr |= (static_cast<u32>(af) << bit_offset); \
+ \
+            return *this; \
+        }
 
 namespace kernel::device::GPIO {
     struct pin {
@@ -36,8 +58,8 @@ namespace kernel::device::GPIO {
         };
         u32 BSRR;   // 位设置/重置寄存器 原子操作	安全快速控制
 
-        peripheral_address GPIO_address;
-        u8 pin_id;
+        peripheral_address GPIO_address;    // GPIO端口地址
+        u8 pin_id;                         // 引脚编号
         pin() = default;
         pin(external_device_type GPIO_id, u8 pin_id) : GPIO_address(GPIO_id), pin_id(pin_id) {}
         ~pin() = default;
@@ -46,22 +68,23 @@ namespace kernel::device::GPIO {
         pin& operator=(output_type type);
         pin& operator=(pull_up_down pull);
         pin& operator=(output_speed speed);
-        pin& operator=(bool ODR_or_IDR);
-        pin& operator=(AF0 af0);
-        pin& operator=(AF1 af1);
-        pin& operator=(AF2 af2);
-        pin& operator=(AF3 af3);
-        pin& operator=(AF4 af4);
-        pin& operator=(AF5 af5);
-        pin& operator=(AF6 af6);
-        pin& operator=(AF7 af7);
-        pin& operator=(AF8 af8);
-        pin& operator=(AF9 af9);
-        pin& operator=(AF10 af10);
-        pin& operator=(AF11 af11);
-        pin& operator=(AF12 af12);
-        pin& operator=(AF13 af13);
-        pin& operator=(AF14 af14);
-        pin& operator=(AF15 af15);
+        pin& operator=(output_level ODR);
+        pin& operator=(u32 BSRR);
+        __operator_AF__(AF0)
+        __operator_AF__(AF1)
+        __operator_AF__(AF2)
+        __operator_AF__(AF3)
+        __operator_AF__(AF4)
+        __operator_AF__(AF5)
+        __operator_AF__(AF6)
+        __operator_AF__(AF7)
+        __operator_AF__(AF8)
+        __operator_AF__(AF9)
+        __operator_AF__(AF10)
+        __operator_AF__(AF11)
+        __operator_AF__(AF12)
+        __operator_AF__(AF13)
+        __operator_AF__(AF14)
+        __operator_AF__(AF15)
     };
 }

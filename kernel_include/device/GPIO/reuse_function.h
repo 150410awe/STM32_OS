@@ -5,7 +5,7 @@
  * @note 包含GPIO复用功能相关的定义和函数声明
 */
 
-#include "../clock_enable/RCC_config.h"
+#include "../../../general/type.h"
 
 namespace kernel::device::GPIO {
     /**

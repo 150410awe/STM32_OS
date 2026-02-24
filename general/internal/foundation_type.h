@@ -34,6 +34,10 @@ namespace general::type {
     constexpr offset_t struct_offset(U T::* u) {
         return reinterpret_cast<offset_t>(&(reinterpret_cast<T*>(nullptr)->*u));
     }
+    enum class output_level : u8 {
+        low = 0,
+        high = 1
+    };
 }
 
 using namespace general::type;

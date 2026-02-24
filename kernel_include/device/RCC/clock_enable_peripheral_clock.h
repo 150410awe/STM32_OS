@@ -89,21 +89,6 @@ namespace kernel::device::RCC {
         SPI6 = 1 << 21,   // SPI6时钟使能（仅F42x/43x）
     };
 
-    struct AHB1_peripheral_clock_mask : lmn_enum_struct_bit_mask<AHB1_peripheral_clock_mask, AHB1_peripheral_clock> {
-        using lmn_enum_struct_bit_mask<AHB1_peripheral_clock_mask, AHB1_peripheral_clock>::lmn_enum_struct_bit_mask;
-    };
-    struct AHB2_peripheral_clock_mask : lmn_enum_struct_bit_mask<AHB2_peripheral_clock_mask, AHB2_peripheral_clock> {
-        using lmn_enum_struct_bit_mask<AHB2_peripheral_clock_mask, AHB2_peripheral_clock>::lmn_enum_struct_bit_mask;
-    };
-    struct AHB3_peripheral_clock_mask : lmn_enum_struct_bit_mask<AHB3_peripheral_clock_mask, AHB3_peripheral_clock> {
-        using lmn_enum_struct_bit_mask<AHB3_peripheral_clock_mask, AHB3_peripheral_clock>::lmn_enum_struct_bit_mask;
-    };
-    struct APB1_peripheral_clock_mask : lmn_enum_struct_bit_mask<APB1_peripheral_clock_mask, APB1_peripheral_clock> {
-        using lmn_enum_struct_bit_mask<APB1_peripheral_clock_mask, APB1_peripheral_clock>::lmn_enum_struct_bit_mask;
-    };
-    struct APB2_peripheral_clock_mask : lmn_enum_struct_bit_mask<APB2_peripheral_clock_mask, APB2_peripheral_clock> {
-        using lmn_enum_struct_bit_mask<APB2_peripheral_clock_mask, APB2_peripheral_clock>::lmn_enum_struct_bit_mask;
-    };
     basic_bit_mask_operation(AHB1_peripheral_clock)
     basic_bit_mask_operation(AHB2_peripheral_clock)
     basic_bit_mask_operation(AHB3_peripheral_clock)
