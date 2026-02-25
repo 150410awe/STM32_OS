@@ -49,6 +49,9 @@ template <class address_t, block block_type> struct address {
         return *(static_cast<address_t*>(this));
     }
     address_t& operator=(u32 set_address) = delete;
+    bool operator==(const address& other) const {
+        return address_value == other.address_value;
+    }
 
     /**
      * 统一的初始化构造函数

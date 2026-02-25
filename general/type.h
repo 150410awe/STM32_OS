@@ -14,6 +14,12 @@
 #include "internal/code_address.h"
 #include "internal/FSMC_address.h"
 #include "internal/lmn_enum_struct_bit_mask.h"
+#include "internal/array.h"
+#include "internal/pair.h"
+#include "internal/array_unordered_map.h"
+#include "internal/array_queue.h"
+#include "internal/array_list.h"
+
 
 
 using namespace general::type;
@@ -26,3 +32,8 @@ using general::memory::SRAM_address;
 using general::device::external_device_type;
 using general::device::FSMC_device_type;
 using general::lmn_enum_struct_bit_mask;
+using general::array;
+using general::pair;
+using general::array_unordered_map;
+using general::array_queue;
+using general::array_list;

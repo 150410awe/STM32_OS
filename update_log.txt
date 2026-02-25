@@ -1,3 +1,46 @@
+2026.2.25.11.36
+我完成了基础的库和实现内存块合并了
+11.58
+我又优化了一下下. memory被改成
+struct memory {
+        int_interval address_interval;
+        memory(int_interval address_interval) : address_interval(address_interval) { }
+        memory() = default;
+        size_t size() const { return address_interval.end - address_interval.start; }
+    };
+使用了 int_interval.
+优化了内存块合并
+size_t freed_size = it->second;
+use_memory.erase(it->first);
+kernel::memory::memory new_block{{reinterpret_cast<max_int_t>(free_address), static_cast<max_int_t>(reinterpret_cast<max_int_t>(free_address) + freed_size)}};
+// 合并空闲块
+// 注意 因为是地址是闭区间. it->address_interval.start == new_block.address_interval.end + 1 时, 只用修改 end, size 会自动更新, 因为size是函数
+// it->address_interval.end == new_block.address_interval.start - 1 时, 只用修改 start, 不修改 end. 本来就不用修改end
+for (auto it = empty_memory_queue.begin(); it != empty_memory_queue.end(); ++it) 
+    if (it->address_interval.start == new_block.address_interval.end + 1) {
+        new_block.address_interval.end += it->size() + 1;
+        empty_memory_queue.erase(it.get_pos());
+        break;
+    }
+    else if (it->address_interval.end == new_block.address_interval.start - 1) {
+        new_block.address_interval.start = it->address_interval.start;
+        empty_memory_queue.erase(it.get_pos());
+        break;
+    }
+empty_memory_queue.push_back(new_block);
+也是大约用2.5h
+当然没什么好说的. 
+array_list.h array_queue.h array_unordered_map.h array.h
+这几个让我心里没底. 因为很有可能有错误.
+因为是ai写的, 我不想写.
+可以说的是 数据结构是我设计的.
+array_list.h
+array<T, N> data;   // 实休数据
+size_t count = 0;   // 大小,最后一个位置?!...
+array<size_t, N> list_table;    // 逻辑结构, 方便便利
+general::array_queue<size_t, N> free_queue; // 日常复用
+然后就这样. 
+0.00.06 基础库, 内存块合并
 2026.2.24.21.00
 经过我的思考后, 我决定先实现内存管理.
 内存分布是这样的,
@@ -73,7 +116,16 @@ use_memory.emplace(it.base_address.address_value, size);use_memory.erase(it);
 动态增删记录.
 但, 因为后面就是数组了, 所以在内存上不是动态. 这会有内存碎与问题. 但很可能那个时候就因为 数组 满了不让玩了.
 乐. 这就是半个内存管理了. 
-2026.2.25.0.09 内存管理增删
+0.00.05 内存管理增删
+已更改 10 个文件, 170 行插入(+), 14 行删除(-)
+我不想让他变复杂. 只要实现最最基础的功能就okk了
+对了, 我返回和接收的地址是 void* 为什么是 void*?
+先说返回. 我 malloc 还要管这是什么什么地址吗? 还要管有没有非法访问吗?
+你给我的, 那必须是合法的, 所以我只管用.
+在说接收. 用 哈希表 他可以保证你的地址是合法的, 然后 free
+不合法直接 return 了
+还有, 就是方便. 这个 SRAM_address 写的感觉像我看 rust 的感觉.
+就是不太灵活, 类型太强了, 我写的不开心, 也是为了快速开发.
 2026.2.24.13.08
 我用了一个小时, 完成了时钟使能寄存器.
 现在应该可以支持GPIO的设置了. 就只有时钟使能寄存器

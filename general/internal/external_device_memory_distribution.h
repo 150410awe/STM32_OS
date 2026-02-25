@@ -7,13 +7,13 @@
 
 #include "external_device_type.h"
 #include "../interval.h"
-#include <array>
+#include "array.h"
 #include <cstddef>
 #include "memory_distribution.h"
 
 namespace general::device {
     namespace {
-        using external_device_array_t = std::array<int_interval, static_cast<size_t>(external_device_type::MAX_VAL)>;
+        using external_device_array_t = general::array<int_interval, static_cast<size_t>(external_device_type::MAX_VAL)>;
         struct external_device_array : external_device_array_t {
     
             constexpr int_interval& operator[](external_device_type device_type) {
@@ -24,7 +24,7 @@ namespace general::device {
                 return external_device_array_t::operator[](static_cast<size_t>(device_type));
             }
         };
-        using FSMC_device_array_t = std::array<int_interval, static_cast<size_t>(FSMC_device_type::MAX_VAL)>;
+        using FSMC_device_array_t = general::array<int_interval, static_cast<size_t>(FSMC_device_type::MAX_VAL)>;
         struct FSMC_device_array : FSMC_device_array_t {
     
             constexpr int_interval& operator[](FSMC_device_type device_type) {

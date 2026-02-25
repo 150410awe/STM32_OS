@@ -6,7 +6,6 @@
 #include "../../../general/type.h"
 #include "memory_layout.h"
 #include "pin.h"
-#include <array>
 
 namespace kernel::device::GPIO {
     struct GPIO {
@@ -15,13 +14,13 @@ namespace kernel::device::GPIO {
                 pins[i] = pin(GPIO_id, i);
         }
 
-        std::array<pin, 16> pins;
+        general::array<pin, 16> pins;
 
         pin& operator[](size_t index) {
             return pins[index];
         }
     };
-    static std::array<GPIO, 9> __GPIO__ {
+    static general::array<GPIO, 9> __GPIO__ {
         GPIO(external_device_type::GPIOA),
         GPIO(external_device_type::GPIOB),
         GPIO(external_device_type::GPIOC),
@@ -34,7 +33,7 @@ namespace kernel::device::GPIO {
     };
 }
 
-inline std::array<kernel::device::GPIO::GPIO, 9>& GPIO = kernel::device::GPIO::__GPIO__;
+inline general::array<kernel::device::GPIO::GPIO, 9>& GPIO = kernel::device::GPIO::__GPIO__;
 inline kernel::device::GPIO::GPIO& GPIOA = GPIO[0];
 inline kernel::device::GPIO::GPIO& GPIOB = GPIO[1];
 inline kernel::device::GPIO::GPIO& GPIOC = GPIO[2];

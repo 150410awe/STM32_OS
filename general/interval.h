@@ -39,13 +39,3 @@ struct interval {
 
 using int_interval = general::interval<max_int_t>;
 using float_interval = general::interval<float>;
-
-#include <array>
-constexpr std::array<int_interval, 10> AVC() {
-    std::array<int_interval, 10> AVC{
-        int_interval{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}
-    };
-    return AVC;
-}
-
-constexpr std::array<int_interval, 10> AVC1 = AVC();
