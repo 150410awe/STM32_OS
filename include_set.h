@@ -10,8 +10,6 @@
 #include "kernel_include/device/GPIO/GPIO.h"
 #include "kernel_include/device/GPIO/reuse_function.h"
 #include "kernel_include/device/GPIO/work_mode.h"
-#include "kernel_include/device/GPIO/pin_id.h"
-#include "kernel_include/device/GPIO/MODER.h"
 #include "kernel_include/device/GPIO/reuse_function_id.h"
 #include "kernel_include/device/GPIO/memory_layout.h"
 #include "kernel_include/device/GPIO/register_config.h"

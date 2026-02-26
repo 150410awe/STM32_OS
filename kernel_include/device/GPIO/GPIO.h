@@ -1,6 +1,5 @@
 #pragma once
 
-#include "pin_id.h"
 #include "register_config.h"
 #include "work_mode.h"
 #include "../../../general/type.h"
@@ -10,8 +9,16 @@
 namespace kernel::device::GPIO {
     struct GPIO {
         GPIO(external_device_type GPIO_id) {
-            for (u8 i = 0; i < 16; i++)
+            for (u8 i = 0; i < 16; i++) {
                 pins[i] = pin { GPIO_id, i };
+                pins[i] = work_mode::output_push_pull;
+                pins[i] = output_type::push_pull;
+                pins[i] = pull_up_down::no_pull;
+                pins[i] = output_speed::low_speed;
+                pins[i] = output_level::low;
+                pins[i] = 0;
+                pins[i].unlock();
+            }
         }
 
         general::array<pin, 16> pins;

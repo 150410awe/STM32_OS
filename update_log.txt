@@ -1,3 +1,73 @@
+2026.2.26.32.00
+我补全了 GPIO::LCKR
+我觉得思想的过程比较有去.
+LCK 标准外设库中的定义
+#define GPIO_LCKR_LCK0                        ((uint16_t)0x0001)
+#define GPIO_LCKR_LCK1                        ((uint16_t)0x0002)...
+#define GPIO_LCKR_LCKK                        ((uint16_t)0x10000)
+自然想到. 使用 enum. 好像是 使用一个 struct LCKR 里面有LCKR 但是他大. 
+（LCKK）- 位16 + 锁定位宏（LCKy） 内存对齐直接干到32位. 我全部pin 加起来也才有 64 + 8 + 8 + 8位 
+不过了是吗? 因为enum里是位掩码. 我们有pin_id, 在看那个名字 所以还要一个arary对应.
+因为有pin_id 为什么不直接咉射? 
+
+/**
+ *  LCKR - 配置锁定寄存器
+ *  注意, 你会发现这个定义和标准库很不一样.  GPIO_LCKR_LCK GPIO锁定位 呢?
+ *  不应该用 enum class ? 不. 在 struct pin 中有 pin_id. 表示是哪个引脚. 之后把引脚变成下标 给 __lock_bit_set 
+ *  这样可能节省空间. 就算不是, 也就这样了.
+ **/
+
+#include "../../../general/type.h"
+
+namespace kernel::device::GPIO {
+    constexpr u16 __lock_bit_set[16] = {
+        0x00000001, 0x00000002, 0x00000004, 0x00000008,
+        0x00000010, 0x00000020, 0x00000040, 0x00000080,
+        0x00000100, 0x00000200, 0x00000400, 0x00000800,
+        0x00001000, 0x00002000, 0x00004000, 0x00008000,
+    };
+    static constexpr u32 LCKK = 0x00010000;
+}
+
+没有加什么内存开悄. 
+        bool is_lock(); //is_locked - 检查引脚是否被锁定
+        bool lock();    //lock - 锁定引脚配置
+        bool unlock();  //unlock - 解锁引脚配置
+设计非常人性化. 绝不是我写多线程写的.
+
+GPIOC[0].lock();
+
+还有一点, 我不理解为什么标准外设库中要我连写
+    // 锁定序列
+    GPIOA->LCKR = lock_pins | GPIO_LCKR_LCKK;  // 第一次：置LCKK=1
+    GPIOA->LCKR = lock_pins;                     // 第二次：置LCKK=0
+    GPIOA->LCKR = lock_pins | GPIO_LCKR_LCKK;    // 第三次：置LCKK=1
+这种东西? 顺序还不可以变.
+你怎么不去死. 我不知道我要干嘛吗? 你用一个宏也好啊. 
+还有, 我不应该管他原来的状态. 比如原来就是 lock, 我不知道. 我在 lock.
+有问题吗?! 没有问题. 因为我应只关心这个东西可不可以生效. 所以
+    if (is_lock())
+        return true;
+unlock() 也是一样. 原来怎么样我不关心. 我只想有这个效果 所以
+    if (!is_lock())
+        return true;
+然后也没什么了. 你可能觉得这二个没什么. 实际上是我自已觉得没什么.
+但重要的是. 明天我就可以去拿板子力。
+对了, 我增加了pin初始化. 
+        GPIO(external_device_type GPIO_id) {
+            for (u8 i = 0; i < 16; i++) {
+                pins[i] = pin { GPIO_id, i };
+                pins[i] = work_mode::output_push_pull;
+                pins[i] = output_type::push_pull;
+                pins[i] = pull_up_down::no_pull;
+                pins[i] = output_speed::low_speed;
+                pins[i] = output_level::low;
+                pins[i] = 0;
+                pins[i].unlock();
+            }
+        }
+在 GPIO 中 方便.
+0.00.07 小补丁 增加了pin初始化 在 GPIO 中, 补全了 GPIO::LCKR
 2026.2.26.13.26
 去除了全部的标准库. 修了一些小bug. 因为我的扳子今天就要到了, 所以我就编译了一下项目. 测试了全部的文件. 修复编译错误.
 编译文件.bin 有5kb. 占 Flash 0.9% (used 4476 bytes from 524288 bytes)
@@ -55,6 +125,7 @@ int main(void) {
 这个和我想的问题差不多. 但是也是解决了. 所以就这样了
 -- 14.18
 0.00.07 小补丁 更多使用列表初始化
+已更改 15 个文件, 120 行插入(+), 71 行删除(-)
 2026.2.25.11.36
 我完成了基础的库和实现内存块合并了
 11.58

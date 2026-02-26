@@ -11,6 +11,7 @@ void setup() {
     GPIOC[0] = output_level::high;
     GPIOC[1] = output_level::low;
     GPIOC[2] = output_level::high;
+    GPIOC[0].lock();
 }
 
 void loop() {
