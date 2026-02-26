@@ -38,4 +38,5 @@ struct interval {
 }
 
 using int_interval = general::interval<max_int_t>;
+using uint_interval = general::interval<max_uint_t>;
 using float_interval = general::interval<float>;

@@ -10,20 +10,20 @@
  */
 namespace general {
 template <typename struct_t, typename enum_t> struct lmn_enum_struct_bit_mask {
-    int64_t data;
+    int_max_t data;
     constexpr lmn_enum_struct_bit_mask() : data { 0 } {}
-    constexpr lmn_enum_struct_bit_mask(enum_t value) : data { static_cast<int64_t>(value) } {}
+    constexpr lmn_enum_struct_bit_mask(enum_t value) : data { static_cast<int_max_t>(value) } {}
     constexpr lmn_enum_struct_bit_mask(const lmn_enum_struct_bit_mask<struct_t, enum_t>& data) : data { data.data } {}
     constexpr lmn_enum_struct_bit_mask(lmn_enum_struct_bit_mask<struct_t, enum_t>&& data) : data { data.data } {}
     constexpr lmn_enum_struct_bit_mask& operator=(const lmn_enum_struct_bit_mask<struct_t, enum_t>& data) { this->data = data.data; return *this; }
     constexpr lmn_enum_struct_bit_mask& operator=(lmn_enum_struct_bit_mask<struct_t, enum_t>&& data) { this->data = data.data; return *this; }
-    constexpr struct_t operator|= (enum_t a) { return this->data |= static_cast<int64_t>(a); }
-    constexpr struct_t operator|(enum_t a) const { return struct_t { this->data | static_cast<int64_t>(a) }; }
-    constexpr struct_t operator&= (enum_t a) { return this->data &= static_cast<int64_t>(a); }
-    constexpr struct_t operator&(enum_t a) const { return struct_t { this->data & static_cast<int64_t>(a) }; }
-    constexpr struct_t operator^(enum_t a) const { return struct_t { this->data ^ static_cast<int64_t>(a) }; }
+    constexpr struct_t operator|= (enum_t a) { return this->data |= static_cast<int_max_t>(a); }
+    constexpr struct_t operator|(enum_t a) const { return struct_t { this->data | static_cast<int_max_t>(a) }; }
+    constexpr struct_t operator&= (enum_t a) { return this->data &= static_cast<int_max_t>(a); }
+    constexpr struct_t operator&(enum_t a) const { return struct_t { this->data & static_cast<int_max_t>(a) }; }
+    constexpr struct_t operator^(enum_t a) const { return struct_t { this->data ^ static_cast<int_max_t>(a) }; }
     constexpr struct_t operator~(void) const { return struct_t { ~this->data }; }
-    constexpr struct_t operator=(enum_t a) { return this->data = static_cast<int64_t>(a); }
+    constexpr struct_t operator=(enum_t a) { return this->data = static_cast<int_max_t>(a); }
     constexpr bool operator!(void) const { return this->data == 0; }
     constexpr bool operator==(lmn_enum_struct_bit_mask a) const { return this->data == a.data; }
     constexpr bool operator!=(lmn_enum_struct_bit_mask a) const { return !(*this == a); }

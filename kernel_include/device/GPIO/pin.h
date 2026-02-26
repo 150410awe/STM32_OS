@@ -4,7 +4,6 @@
 #include "output_speed_config.h"
 #include "reuse_function_id.h"
 #include "register_config.h"
-#include <type_traits>
 
 // 这个傻逼不支持c++20, 所以我用宏了. 我操你奶.
 #define __operator_AF__(AF)  \

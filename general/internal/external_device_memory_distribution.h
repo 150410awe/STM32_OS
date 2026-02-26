@@ -8,29 +8,28 @@
 #include "external_device_type.h"
 #include "../interval.h"
 #include "array.h"
-#include <cstddef>
 #include "memory_distribution.h"
 
 namespace general::device {
     namespace {
-        using external_device_array_t = general::array<int_interval, static_cast<size_t>(external_device_type::MAX_VAL)>;
+        using external_device_array_t = general::array<uint_interval, static_cast<size_t>(external_device_type::MAX_VAL)>;
         struct external_device_array : external_device_array_t {
     
-            constexpr int_interval& operator[](external_device_type device_type) {
+            constexpr uint_interval& operator[](external_device_type device_type) {
                 return external_device_array_t::operator[](static_cast<size_t>(device_type));
             }
             
-            constexpr const int_interval& operator[](external_device_type device_type) const {
+            constexpr const uint_interval& operator[](external_device_type device_type) const {
                 return external_device_array_t::operator[](static_cast<size_t>(device_type));
             }
         };
-        using FSMC_device_array_t = general::array<int_interval, static_cast<size_t>(FSMC_device_type::MAX_VAL)>;
+        using FSMC_device_array_t = general::array<uint_interval, static_cast<size_t>(FSMC_device_type::MAX_VAL)>;
         struct FSMC_device_array : FSMC_device_array_t {
     
-            constexpr int_interval& operator[](FSMC_device_type device_type) {
+            constexpr uint_interval& operator[](FSMC_device_type device_type) {
                 return FSMC_device_array_t::operator[](static_cast<size_t>(device_type));
             }
-            constexpr const int_interval& operator[](FSMC_device_type device_type) const {
+            constexpr const uint_interval& operator[](FSMC_device_type device_type) const {
                 return FSMC_device_array_t::operator[](static_cast<size_t>(device_type));
             }
         };
@@ -39,7 +38,7 @@ namespace general::device {
     constexpr external_device_array init_external_device_memory() {
         // 初始化数组, 不知道为什么必须这样干.
         external_device_array EDM{
-            int_interval{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 }
+            uint_interval{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 },{ 0,0 }
         };
         using EDT = external_device_type;
         //AHB1 总线外设 (0x4002 0000 - 0x4002 7FFF)
@@ -126,7 +125,7 @@ namespace general::device {
     }
     constexpr FSMC_device_array init_FSMC_device_memory(){
         FSMC_device_array FDM{ 
-            int_interval{0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}
+            uint_interval{0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}
         };
         using FDT = FSMC_device_type;
         // FSMC 区 (0x6000 0000 - 0x9FFF FFFF)

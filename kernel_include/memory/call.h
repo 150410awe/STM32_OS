@@ -39,7 +39,7 @@ namespace kernel::call {
         
         size_t freed_size = it->second;
         use_memory.erase(it->first);
-        kernel::memory::memory new_block{{reinterpret_cast<max_int_t>(free_address), static_cast<max_int_t>(reinterpret_cast<max_int_t>(free_address) + freed_size)}};
+        kernel::memory::memory new_block{{reinterpret_cast<max_uint_t>(free_address), static_cast<max_uint_t>(reinterpret_cast<max_uint_t>(free_address) + freed_size)}};
 
         // 合并空闲块
         // 注意 因为是地址是闭区间. it->address_interval.start == new_block.address_interval.end + 1 时, 只用修改 end, size 会自动更新, 因为size是函数

@@ -2,8 +2,6 @@
 
 #include "../../general/type.h"
 #include "../../general/internal/memory_distribution.h"
-#include <unordered_map>
-#include <list>
 
 
 
@@ -16,8 +14,8 @@ namespace kernel::memory {
      * @note 内存地址区间是闭区间, size 一般自己会计算
      */
     struct memory {
-        int_interval address_interval;
-        memory(int_interval address_interval) : address_interval(address_interval) { }
+        uint_interval address_interval;
+        memory(uint_interval address_interval) : address_interval(address_interval) { }
         memory() = default;
         size_t size() const { return address_interval.end - address_interval.start; }
     };

@@ -5,7 +5,7 @@
 
 namespace kernel::device::RCC {
     namespace {
-        template<typename type, max_int_t address_value>
+        template<typename type, u32 address_value>
         struct clock_enable_register {
             constexpr clock_enable_register& operator=(const type clock) {
                 volatile u32* reg_ptr = reinterpret_cast<volatile u32*>(address_value);

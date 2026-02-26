@@ -5,28 +5,26 @@
  * @note 包含基础类型相关的定义和函数声明
 */
 
-#include <cstdint>
-#include <cstddef>
-
 namespace general::type {
-    using max_int_t = intmax_t;
-    using max_uint_t = uintmax_t;
+    using max_int_t = long;
+    using max_uint_t = unsigned long;
     using int_max_t = max_int_t;
     using uint_max_t = max_uint_t;
     using max_i = max_int_t;
     using max_u = max_uint_t;
-    using i8 = int8_t;
-    using u8 = uint8_t;
-    using i16 = int16_t;
-    using u16 = uint16_t;
-    using i32 = int32_t;
-    using u32 = uint32_t;
-    using i64 = int64_t;
-    using u64 = uint64_t;
+    using i8 = char;
+    using u8 = unsigned char;
+    using i16 = short;
+    using u16 = unsigned short;
+    using i32 = int;
+    using u32 = unsigned int;
+    using i64 = long long;
+    using u64 = unsigned long long;
     using u_char = u8;
     using offset_t = max_int_t; // 偏移量
     using subscript_t = max_int_t;  // 下标
     using ptrdiff_t = max_int_t;    // 指针差
+    using size_t = max_uint_t;      // 大小
     /**
     * struct_offset - 计算结构体成员的偏移量
     * @param u 指向结构体成员的指针
@@ -40,6 +38,14 @@ namespace general::type {
         low = 0,
         high = 1
     };
+    using int8_t = i8;
+    using uint8_t = u8;
+    using int16_t = i16;
+    using uint16_t = u16;
+    using int32_t = i32;
+    using uint32_t = u32;
+    using int64_t = i64;
+    using uint64_t = u64;
 }
 
 using namespace general::type;

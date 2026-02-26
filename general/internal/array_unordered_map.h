@@ -132,7 +132,7 @@ namespace general {
                 return false;
             
             // 检查键是否已存在
-            if (find(k) != nullptr) 
+            if (find(k) != end()) 
                 return false;
             
             
@@ -152,8 +152,8 @@ namespace general {
          * erase - 删除键值对
          */
         bool erase(const key_type k) {
-            value_type* found = find(k);
-            if (found == nullptr) 
+            iterator found = find(k);
+            if (found == end()) 
                 return false;
             
             
@@ -171,15 +171,11 @@ namespace general {
          * operator[] - 访问或插入键值对
          */
         T& operator[](const key_type k) {
-            value_type* found = find(k);
-            if (found != nullptr) {
-                return found->second;
-            }
-            
-            // 插入新键值对
-            emplace(k, T());
-            found = find(k);
-            return found->second;
+            iterator found = find(k);
+            if (found != end()) 
+                return *end();
+
+            return *found;
         }
         
         /**
