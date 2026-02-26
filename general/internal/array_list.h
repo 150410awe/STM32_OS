@@ -36,7 +36,7 @@ namespace general {
             if (free_queue.empty())
                 return false;
                 
-            size_t index = free_queue.front();
+            size_t index{ free_queue.front() };
             free_queue.pop();
             
             data[index] = value;
@@ -53,7 +53,7 @@ namespace general {
             if (empty()) 
                 return false;
             
-            size_t index = list_table[count - 1];
+            size_t index { list_table[count - 1] };
             free_queue.push(index);
             count--;
             return true;
@@ -72,7 +72,7 @@ namespace general {
             if (free_queue.empty())
                 return false;
                 
-            size_t new_index = free_queue.front();
+            size_t new_index { free_queue.front() };
             free_queue.pop();
             
             // 移动逻辑索引
@@ -93,11 +93,11 @@ namespace general {
             if (empty() || position >= count) 
                 return false;
             
-            if (position == count - 1) {
+            if (position == count - 1) 
                 return pop_back();
-            }
             
-            size_t index = list_table[position];
+            
+            size_t index { list_table[position] };
             free_queue.push(index);
             
             for (size_t i = position; i < count - 1; ++i) 
@@ -126,7 +126,7 @@ namespace general {
          */
         T& at(size_t position) {
             if (position >= count) 
-                return nullptr; // error
+                return operator[](0); // error
             return operator[](position);
         }
         
@@ -135,7 +135,7 @@ namespace general {
          */
         const T& at(size_t position) const {
             if (position >= count) 
-                return nullptr; // error
+                return operator[](0); // error
             return operator[](position);
         }
         
@@ -166,8 +166,9 @@ namespace general {
          * front - 访问第一个元素
          */
         T& front() {
-            if (empty()) 
-                return nullptr; // error
+            if (empty())
+            // 先这样
+                return operator[](0); // error 
 
             return operator[](0);
         }
@@ -177,7 +178,8 @@ namespace general {
          */
         const T& front() const {
             if (empty()) 
-                return nullptr; // error
+            // 先这样
+                return operator[](0); // error
             return operator[](0);
         }
         
@@ -186,7 +188,8 @@ namespace general {
          */
         T& back() {
             if (empty()) 
-                return nullptr; // error    
+            // 先这样
+                return operator[](0); // error    
             return operator[](count - 1);
         }
         
@@ -195,7 +198,8 @@ namespace general {
          */
         const T& back() const {
             if (empty()) 
-                return nullptr; // error    
+            // 先这样
+                return operator[](0); // error    
             return operator[](count - 1);
         }
 
@@ -217,7 +221,7 @@ namespace general {
             }
             
             iterator operator++(int) {
-                iterator tmp = *this;
+                iterator tmp{ *this };
                 pos++;
                 return tmp;
             }
@@ -239,11 +243,11 @@ namespace general {
         };
         
         iterator begin() {
-            return iterator(this, 0);
+            return iterator { this, 0 };
         }
         
         iterator end() {
-            return iterator(this, count);
+            return iterator { this, count };
         }
     };
 }

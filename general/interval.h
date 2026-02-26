@@ -20,7 +20,7 @@ struct interval {
      * @param start 区间开始
      * @param end 区间结束
      */
-    constexpr interval(T start, T end) : start(start), end(end) {}
+    constexpr interval(T start, T end) : start{ start }, end{ end } {}
     constexpr interval() {}
     /**
      * contains - 判断值是否在区间内

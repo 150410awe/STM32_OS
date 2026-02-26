@@ -33,8 +33,8 @@ namespace kernel::device::GPIO {
         output_type type : 1;       // 输出类型	决定输出的电气特性
         pull_up_down pull : 2;      // 上拉/下拉电阻	决定引脚的输入状态
         output_speed speed : 2;     // 输出速度	决定引脚的输出速率
-        register_type ODR;     // 输出数据寄存器	控制引脚的输出状态
-        register_type IDR;     // 输入数据寄存器	读取引脚的输入状态
+        output_level ODR;     // 输出数据寄存器	控制引脚的输出状态
+        output_level IDR;     // 输入数据寄存器	读取引脚的输入状态
         union {
             struct {
                 AF0 af0 : 4;

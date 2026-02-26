@@ -8,7 +8,7 @@ namespace kernel::device::RCC {
         template<typename type, u32 address_value>
         struct clock_enable_register {
             constexpr clock_enable_register& operator=(const type clock) {
-                volatile u32* reg_ptr = reinterpret_cast<volatile u32*>(address_value);
+                volatile u32* reg_ptr{ reinterpret_cast<volatile u32*>(address_value) };
                 *reg_ptr |= static_cast<u32>(clock);
                 return *this;
             }

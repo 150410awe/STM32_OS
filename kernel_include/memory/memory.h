@@ -15,16 +15,16 @@ namespace kernel::memory {
      */
     struct memory {
         uint_interval address_interval;
-        memory(uint_interval address_interval) : address_interval(address_interval) { }
+        memory(uint_interval address_interval) : address_interval{ address_interval } { }
         memory() = default;
         size_t size() const { return address_interval.end - address_interval.start; }
     };
     // general::memory::block_SRAM_snippet 只是临时. 因为内核内存不算
-    inline static general::array_list<memory, use_max_size> empty_memory_queue = []() {
+    inline static general::array_list<memory, use_max_size> empty_memory_queue{ []() {
         general::array_list<memory, use_max_size> result;
         result.push_back(memory{general::memory::block_SRAM_snippet});
         return result;
-    }();
+    }() };
     
     inline static general::array_unordered_map<size_t, use_max_size> use_memory;    // size_t 内存大小, memory 内存块大小
 }

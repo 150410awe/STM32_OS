@@ -29,7 +29,7 @@ namespace kernel::device::RCC {
     namespace address {
         namespace {
             constexpr peripheral_address RCC_register_address(RCC_register_type type) {
-                peripheral_address ret = external_device_type::RCC;
+                peripheral_address ret{ external_device_type::RCC };
                 ret.offset(static_cast<size_t>(type));
                 return ret;
             }

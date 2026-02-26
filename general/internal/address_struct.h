@@ -17,7 +17,7 @@ namespace general::memory {
  * 必须显式写 block 类型 , 才可以转换为对应类型的地址
  */
 template <class address_t, block block_type> struct address {
-    u32 address_value = null_address_value;
+    u32 address_value{ null_address_value };
 
     // 注... block::null 在 一些函数中被看做错误,
     // 因为你好像指向了一个不存在的,超过4gb的内存...
@@ -59,13 +59,13 @@ template <class address_t, block block_type> struct address {
      * @note
      * 模板参数已经指定了block_type，需要检查地址值是否在指定的内存块类型范围内
      */
-    explicit address(u32* address) : address_value(*address) {
+    explicit address(u32* address) : address_value{ *address } {
         if (!update() || !check_address()) {
             address_value = null_address_value;
             // error...
         }
     }
-    constexpr explicit address(u32 value) : address_value(value) {
+    constexpr explicit address(u32 value) : address_value{ value } {
         // 检查地址是否在指定的内存块类型范围内
         if (!update() || !check_address()) {
             address_value = null_address_value;

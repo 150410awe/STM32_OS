@@ -11,7 +11,7 @@ namespace kernel::device::GPIO {
     struct GPIO {
         GPIO(external_device_type GPIO_id) {
             for (u8 i = 0; i < 16; i++)
-                pins[i] = pin(GPIO_id, i);
+                pins[i] = pin { GPIO_id, i };
         }
 
         general::array<pin, 16> pins;

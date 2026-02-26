@@ -16,6 +16,45 @@ interval 基础类型 地址interval 全改了. 地址interval现在是
 uint_amx_t 所以我不知道会不会在那个地方出问题. 就是类型转换
 当然, 很多我用了 { }, 这个比较严格. 错误可能会少一点
 0.00.07 去除了全部的标准库, 测试和优化(不是)了全部的文件, 修复编译错误
+已更改 14 个文件, 192 行插入(+), 109 行删除(-)
+对了, 我没想到没几下编译就过了. 当然ai是2b,天天失忆这一块. 我不想多说了
+-- 13.49
+对了,  main.cpp
+
+void setup() {
+    using namespace kernel::device::RCC;
+
+    AHB1ENR = AHB1_peripheral_clock::GPIOC;
+
+    GPIOC[0] = output_level::high;
+    GPIOC[1] = output_level::low;
+    GPIOC[2] = output_level::high;
+}
+
+void loop() {
+    // 主循环代码
+}
+
+int main(void) {
+    setup();
+    while (1) 
+        loop();
+    
+    return 0;
+}
+
+这使得直接就可以点灯.
+为了安全性, 和我没事干, 我准备优化一下代码, 尽可能用 {} 防止出问题
+我换完了, 当然还有一些. 那个没必要. 比如enum 赋值. 我发现了6个类型转换问题. 
+- Line 13: narrowing conversion of '(((int)((kernel::device::GPIO::pin*)this)->kernel::device::GPIO::pin::pin_id) * 2)' from 'int' to 'general::type::u32'
+- Line 14: narrowing conversion of '(3 << bit_offset)' from 'int' to 'general::type::u32'
+- Line 44: 类似Line 13的警告
+- Line 45: 类似Line 14的警告
+- Line 59: 类似Line 13的警告
+- Line 60: 类似Line 14的警告
+这个和我想的问题差不多. 但是也是解决了. 所以就这样了
+-- 14.18
+0.00.07 小补丁 更多使用列表初始化
 2026.2.25.11.36
 我完成了基础的库和实现内存块合并了
 11.58

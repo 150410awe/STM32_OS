@@ -39,9 +39,9 @@ namespace general {
             
             iterator& operator++() {
                 // 跳到下一个有效元素（不是 EMPTY_KEY 也不是 TOMBSTONE）
-                do {
+                do 
                     pos++;
-                } while (pos < capacity && 
+                while (pos < capacity && 
                         (map->data[pos].first == map->EMPTY_KEY || 
                          map->data[pos].first == map->TOMBSTONE));
                 return *this;
@@ -58,13 +58,13 @@ namespace general {
         iterator begin() {
             for (size_type i = 0; i < capacity; ++i) 
                 if (data[i].first != EMPTY_KEY && data[i].first != TOMBSTONE) 
-                    return iterator(this, i);
+                    return iterator{ this, i };
                 
             return end();
         }
         
         iterator end() {
-            return iterator(this, capacity);
+            return iterator{ this, capacity };
         }
 
         array_unordered_map() {
@@ -79,7 +79,7 @@ namespace general {
          */
         size_type hash_function(const key_type k) const {
             // 确保处理负数键
-            size_type h = static_cast<size_type>(k >= 0 ? k : -k);
+            size_type h{ static_cast<size_type>(k >= 0 ? k : -k) };
             return h % capacity;
         }
         
@@ -87,12 +87,12 @@ namespace general {
          * find - 查找键对应的指针
          */
         iterator find(const key_type k) {
-            size_type index = hash_function(k);
-            size_type start = index;
+            size_type index{ hash_function(k) };
+            size_type start{ index };
             
             do {
                 if (data[index].first == k) 
-                    return iterator(this, index);
+                    return iterator{ this, index };
                 
                 // 遇到 EMPTY_KEY 说明后面不可能有该键（线性探测的终止条件）
                 if (data[index].first == EMPTY_KEY) 
@@ -108,12 +108,12 @@ namespace general {
          * find - const版本
          */
         iterator find(const key_type k) const {
-            size_type index = hash_function(k);
-            size_type start = index;
+            size_type index{ hash_function(k) };
+            size_type start{ index };
             
             do {
                 if (data[index].first == k) 
-                    return iterator(this, index);
+                    return iterator{ this, index };
                 
                 if (data[index].first == EMPTY_KEY) 
                     return end();
@@ -136,7 +136,7 @@ namespace general {
                 return false;
             
             
-            size_type index = hash_function(k);
+            size_type index{ hash_function(k) };
             
             // 寻找空位置（EMPTY_KEY 或 TOMBSTONE）
             while (data[index].first != EMPTY_KEY && 

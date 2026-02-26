@@ -7,7 +7,7 @@ namespace general {
     struct pair {
         T first;
         U second;
-        pair(T first, U second) : first(first), second(second) {}
+        pair(T first, U second) : first{ first }, second{ second } {}
         pair() = default;
     };
 }

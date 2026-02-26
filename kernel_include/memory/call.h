@@ -14,7 +14,7 @@ namespace kernel::call {
             // it->size > size 说明 it->size - size > 0, 还有空间, 因为是闭区间, 所以要 + 1.
         for (auto it = empty_memory_queue.begin(); it != empty_memory_queue.end(); ++it) 
             if (it->size() >= size) {
-                void* result = reinterpret_cast<void*>(it->address_interval.start);
+                void* result{ reinterpret_cast<void*>(it->address_interval.start) };
                 
                 use_memory.emplace(it->address_interval.start , size);
                 if (it->size() == size) 
@@ -33,13 +33,14 @@ namespace kernel::call {
         if (free_address == nullptr)
             return;
         
-        auto it = use_memory.find(reinterpret_cast<max_int_t>(free_address));
+        auto it{ use_memory.find(reinterpret_cast<max_int_t>(free_address)) };
         if (it == use_memory.end())
             return;
         
         size_t freed_size = it->second;
         use_memory.erase(it->first);
-        kernel::memory::memory new_block{{reinterpret_cast<max_uint_t>(free_address), static_cast<max_uint_t>(reinterpret_cast<max_uint_t>(free_address) + freed_size)}};
+        kernel::memory::memory new_block { { 
+            reinterpret_cast<max_uint_t>(free_address), static_cast<max_uint_t>(reinterpret_cast<max_uint_t>(free_address) + freed_size) } } ;
 
         // 合并空闲块
         // 注意 因为是地址是闭区间. it->address_interval.start == new_block.address_interval.end + 1 时, 只用修改 end, size 会自动更新, 因为size是函数

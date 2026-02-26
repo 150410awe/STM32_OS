@@ -14,4 +14,6 @@ namespace kernel::memory {
     }();
     一定设好内核内存区间
 }
+3.
+array_list.h 异常处理
 ...
