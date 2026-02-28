@@ -1,3 +1,16 @@
+2026.2.28.16.00
+优化. GPIO 移到编译时. 
+Linking .pio\build\black_f407ve\firmware.elf
+Checking size .pio\build\black_f407ve\firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [=         ]   7.7% (used 10068 bytes from 131072 bytes)
+Flash: [          ]   0.8% (used 3956 bytes from 524288 bytes)
+Building .pio\build\black_f407ve\firmware.bin
+10 -> 8%
+省4000字节.
+优化 pin, 充分利用 pin_id 的位掩码功能.
+直接与硬件寄存器交互的操作中，避免了不必要的位计算，提高了码效率。
+0.00.08 小补丁 GPIO 移到编译时, 充分利用 pin_id 的位掩码功能. 提高代码效率
 2026.2.26.32.00
 我补全了 GPIO::LCKR
 我觉得思想的过程比较有去.
@@ -68,6 +81,8 @@ unlock() 也是一样. 原来怎么样我不关心. 我只想有这个效果 所
         }
 在 GPIO 中 方便.
 0.00.07 小补丁 增加了pin初始化 在 GPIO 中, 补全了 GPIO::LCKR
+已更改 9 个文件, 184 行插入(+), 36 行删除(-)
+-- 23.34
 2026.2.26.13.26
 去除了全部的标准库. 修了一些小bug. 因为我的扳子今天就要到了, 所以我就编译了一下项目. 测试了全部的文件. 修复编译错误.
 编译文件.bin 有5kb. 占 Flash 0.9% (used 4476 bytes from 524288 bytes)

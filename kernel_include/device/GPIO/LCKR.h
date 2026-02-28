@@ -16,5 +16,5 @@ namespace kernel::device::GPIO {
         0x00000100, 0x00000200, 0x00000400, 0x00000800,
         0x00001000, 0x00002000, 0x00004000, 0x00008000,
     };
-    static constexpr u32 LCKK = 0x00010000;
+    constexpr u32 LCKK = 0x00010000;
 }
