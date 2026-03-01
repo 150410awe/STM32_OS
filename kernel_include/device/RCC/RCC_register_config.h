@@ -25,12 +25,29 @@ namespace kernel::device::RCC {
         APB2LPENR = 0x64,   // APB2低功耗 - 睡眠模式APB2时钟使能
         BDCR = 0x70,        // 备份域控制 - LSE、RTC时钟控制
         CSR = 0x74,         // 时钟状态 - 复位标志、LSI控制
+        /* 
+        RCC_RESERVED1 = 0x1C  // 保留
+        RCC_RESERVED2 = 0x28  // 保留
+        RCC_RESERVED3 = 0x2C  // 保留
+        RCC_RESERVED4 = 0x3C  // 保留
+        RCC_RESERVED5 = 0x48  // 保留
+        RCC_RESERVED6 = 0x4C  // 保留
+        RCC_RESERVED7 = 0x5C  // 保留
+        RCC_RESERVED8 = 0x68  // 保留
+        RCC_RESERVED9 = 0x6C  // 保留
+        RCC_RESERVED10 = 0x78  // 保留
+        RCC_RESERVED11 = 0x7C  // 保留
+        不应访问
+        */
+        //RCC_SSCGR = 0x80,  // 扩频时钟生成寄存器（STM32F42x/43x） 不支持
+        RCC_PLLI2SCFGR = 0x84,  // PLLI2S配置寄存器
+        //RCC_DCKCFGR = 0x8C,  // 专用时钟配置寄存器（STM32F42x/43x）不支持
     };
     namespace address {
         namespace {
             constexpr peripheral_address RCC_register_address(RCC_register_type type) {
                 peripheral_address ret{ external_device_type::RCC };
-                ret.offset(static_cast<size_t>(type));
+                ret.add(static_cast<u32>(type));
                 return ret;
             }
         }

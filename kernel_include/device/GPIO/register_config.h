@@ -19,4 +19,28 @@ namespace kernel::device::GPIO {
     constexpr max_int_t operator-(register_type a, max_int_t b) {
         return static_cast<max_int_t>(a) - b;
     }
+    namespace pin_number {
+        constexpr u32 MODER = 2;
+        constexpr u32 OTYPER = 1;
+        constexpr u32 OSPEEDR = 2;
+        constexpr u32 PUPDR = 2;
+        constexpr u32 IDR = 1;
+        constexpr u32 ODR = 1;
+        constexpr u32 BSRR = 32;
+        constexpr u32 AFR = 4;
+        constexpr u32 AFRL = 2;
+        constexpr u32 AFRH = 2;
+    }
+    namespace mask {
+        constexpr u32 MODER = 0x3;
+        constexpr u32 OTYPER = 0x1;
+        constexpr u32 OSPEEDR = 0x3;
+        constexpr u32 PUPDR = 0x3;
+        constexpr u32 IDR = 0x1;
+        constexpr u32 ODR = 0x1;
+        constexpr u32 BSRR = 0xFFFF;
+        constexpr u32 AFR = 0xF;
+        // constexpr u32 AFRL = 0xF; 不确定
+        // constexpr u32 AFRH = 0xF; 不确定
+    }
 }

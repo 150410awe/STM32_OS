@@ -102,10 +102,20 @@ template <class address_t, block block_type> struct address {
     constexpr bool update() {
         return static_cast<address_t*>(this)->update();
     }
-    constexpr bool offset(size_t offset) {
-        address_value += offset;
+    constexpr bool add(u32 add_address) {
+        address_value += add_address;
         // 检查地址是否在指定的内存块类型范围内
-        if (!update() || !check_address()) {
+        if (!check_address()) {
+            address_value = null_address_value;
+            // error...
+            return false;
+        }
+        return true;
+    }
+    constexpr bool sub(u32 sub_address) {
+        address_value -= sub_address;
+        // 检查地址是否在指定的内存块类型范围内
+        if (!check_address()) {
             address_value = null_address_value;
             // error...
             return false;

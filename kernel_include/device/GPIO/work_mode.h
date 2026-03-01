@@ -5,7 +5,7 @@
 namespace kernel::device::GPIO {
     enum class work_mode : u8 {
         input = 0b00,              // 输入模式 - MODER=00
-        output_push_pull = 0b01,     // 推挽输出模式 - MODER=01
+        output = 0b01,     // 输出模式 - MODER=01
         alternate_function_push_pull = 0b10,  // 复用推挽模式 - MODER=10
         analog = 0b11,               // 模拟模式 - MODER=11
     };
@@ -19,7 +19,6 @@ namespace kernel::device::GPIO {
         no_pull = 0b00,   // 无上拉/下拉 - PUPDR=00
         pull_up = 0b01,   // 上拉 - PUPDR=01
         pull_down = 0b10, // 下拉 - PUPDR=10
-        reserved = 0b11,  // 保留 - PUPDR=11
     };
 
     enum class interrupt_trigger : u8 {

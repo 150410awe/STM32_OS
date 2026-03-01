@@ -35,8 +35,7 @@ struct peripheral_address : address<peripheral_address, block::peripheral_area> 
             return false;
 
         // 检查外部设备内存是否包含该地址
-        const auto& external_device_memory = general::device::external_device_memory[external_device_type];
-        if (!external_device_memory.contains(address_value))
+        if (!general::device::external_device_memory[external_device_type].contains(address_value))
             return false;
 
         return true;

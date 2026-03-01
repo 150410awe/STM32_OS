@@ -80,13 +80,13 @@ namespace kernel::device::RCC {
         ADC3 = 1 << 10,   // ADC3时钟使能
         SDIO = 1 << 11,   // SDIO时钟使能
         SPI1 = 1 << 12,   // SPI1时钟使能
-        SPI4 = 1 << 13,   // SPI4时钟使能（仅F42x/43x）
+        // SPI4 = 1 << 13,   // SPI4时钟使能（仅F42x/43x） 不支持
         SYSCFG = 1 << 14, // 系统配置控制器时钟使能
         TIM9 = 1 << 16,   // TIM9时钟使能
         TIM10 = 1 << 17,  // TIM10时钟使能
         TIM11 = 1 << 18,  // TIM11时钟使能
-        SPI5 = 1 << 20,   // SPI5时钟使能（仅F42x/43x）
-        SPI6 = 1 << 21,   // SPI6时钟使能（仅F42x/43x）
+        // SPI5 = 1 << 20,   // SPI5时钟使能（仅F42x/43x）不支持
+        // SPI6 = 1 << 21,   // SPI6时钟使能（仅F42x/43x）不支持
     };
 
     basic_bit_mask_operation(AHB1_peripheral_clock)
