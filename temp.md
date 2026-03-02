@@ -16,4 +16,6 @@ namespace kernel::memory {
 }
 3.
 array_list.h 异常处理
+4.
+pin.h + .cpp 异常处理
 ...
