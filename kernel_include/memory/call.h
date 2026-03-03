@@ -44,18 +44,21 @@ namespace kernel::call {
 
         // 合并空闲块
         // 注意 因为是地址是闭区间. it->address_interval.start == new_block.address_interval.end + 1 时, 只用修改 end, size 会自动更新, 因为size是函数
-        // it->address_interval.end == new_block.address_interval.start - 1 时, 只用修改 start, 不修改 end. 本来就不用修改end
+        // it->address_interval.end == new_block.address_interval.start - 1 时, 只用修改 start, 不修改 end. 本来就不用修改end.
+
+        check:
         for (auto it = empty_memory_queue.begin(); it != empty_memory_queue.end(); ++it) 
             if (it->address_interval.start == new_block.address_interval.end + 1) {
                 new_block.address_interval.end += it->size() + 1;
                 empty_memory_queue.erase(it.get_pos());
-                break;
+                goto check;
             }
             else if (it->address_interval.end == new_block.address_interval.start - 1) {
                 new_block.address_interval.start = it->address_interval.start;
                 empty_memory_queue.erase(it.get_pos());
-                break;
+                goto check;
             }
+        
         empty_memory_queue.push_back(new_block);
     }
 }

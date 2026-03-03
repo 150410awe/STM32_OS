@@ -1,3 +1,126 @@
+2026.3.3.11.35
+我完成了 unique_ptr vector 实现
+原来的那个实现太重了. 我只想要简单的 增删改查
+可以测试一下了
+--13.38 okk
+我的内存管理有一个小bug, 前后都有空闲块只合一个的问题
+我就在次检查.
+除了这个. 其他都没有问题.
+非常okk.
+现在测试 vector 的功能
+okk.
+测试完成, 没有问题. 内存也没问题.
+非常没问题. 下午实现文件的 增删改查
+  STM32 Vector Test
+  Testing vector.h functionality
+================================
+
+=== Testing vector.h ===
+
+Test 1: Default constructor
+  Default vector created
+  Size: 0
+  Capacity: 0
+
+=== Current Memory Usage ===
+=== Testing empty memory queue ===
+address_interval: 536887961 - 1073741823 Size: 536853862
+Test 2: Constructor with capacity
+  Vector with capacity 5 created
+  Size: 0
+  Capacity: 5
+
+=== Current Memory Usage ===
+Address: 536887961 Size: 20
+=== Testing empty memory queue ===
+address_interval: 536887982 - 1073741823 Size: 536853841
+Test 3: push_back operation
+  Pushed 0 - Size: 1 Capacity: 5
+  Pushed 10 - Size: 2 Capacity: 5
+  Pushed 20 - Size: 3 Capacity: 5
+  Pushed 30 - Size: 4 Capacity: 5
+  Pushed 40 - Size: 5 Capacity: 5
+  Pushed 50 - Size: 6 Capacity: 11
+  Pushed 60 - Size: 7 Capacity: 11
+  Pushed 70 - Size: 8 Capacity: 11
+  Pushed 80 - Size: 9 Capacity: 11
+  Pushed 90 - Size: 10 Capacity: 11
+
+Test 4: operator[] access
+  v2[0] = 0
+  v2[1] = 10
+  v2[2] = 20
+  v2[3] = 30
+  v2[4] = 40
+  v2[5] = 50
+  v2[6] = 60
+  v2[7] = 70
+  v2[8] = 80
+  v2[9] = 90
+
+Test 5: reserve operation
+  Before reserve - Capacity: 11
+  After reserve(20) - Capacity: 20
+  Size remains: 10
+
+Test 6: delete_data operation
+  Before delete - Size: 10
+  After delete_data(2) - Size: 9
+  Elements after deletion:
+  v2[0] = 0
+  v2[1] = 10
+  v2[2] = 30
+  v2[3] = 40
+  v2[4] = 50
+  v2[5] = 60
+  v2[6] = 70
+  v2[7] = 80
+  v2[8] = 90
+
+Test 7: clear operation
+  Before clear - Size: 9
+  After clear - Size: 0
+  Capacity remains: 20
+
+Test 8: Reusing cleared vector
+  After push_back 5 elements - Size: 5
+  Capacity: 20
+  Elements:
+  v2[0] = 0
+  v2[1] = 100
+  v2[2] = 200
+  v2[3] = 300
+  v2[4] = 400
+
+Test 9: Edge case - empty vector
+  Empty vector size: 0
+  Empty vector capacity: 0
+
+=== Current Memory Usage ===
+Address: 536888027 Size: 80
+=== Testing empty memory queue ===
+address_interval: 536888108 - 1073741823 Size: 536853715
+address_interval: 536887961 - 536888026 Size: 65
+Test 10: Large vector test
+  Large vector size: 100
+  Large vector capacity: 100
+  First element: 0
+  Last element: 99
+
+=== Current Memory Usage ===
+Address: 536888108 Size: 400
+Address: 536888027 Size: 80
+=== Testing empty memory queue ===
+address_interval: 536888509 - 1073741823 Size: 536853314
+address_interval: 536887961 - 536888026 Size: 65
+=== Vector tests completed ===
+
+=== Current Memory Usage ===
+=== Testing empty memory queue ===
+address_interval: 536887961 - 1073741823 Size: 536853862
+All vector tests completed!
+-- 13.54
+0.00.10 vector unique_ptr 内存管理测试正常. vector测试正常
 2026.3.2.21.59
 我看看什么东西有必要写.
 打开模式 必要 但简化
@@ -56,6 +179,7 @@ code_address 太奇怪了.
 明显我对 我的 memory 管理 没信心.
 就这样了.
 0.00.09 文件系统基础设施
+已更改 15 个文件, 245 行插入(+), 10 行删除(-)
 2026.3.1.12.22
 我的地址果然计算错误.
 重点在于
